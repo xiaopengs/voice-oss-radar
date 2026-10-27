@@ -1,0 +1,1944 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>语音开源雷达 · 77 个语音开源项目索引</title>
+<meta name="description" content="持续收集与核实的语音方向开源项目索引：ASR、TTS、全双工、语音 Agent、说话人分离、端侧推理、音频前端、变声、语音翻译、会议转写。每条标注代码许可与权重许可。">
+<style>
+  :root{
+    --canvas:#0a0c11;
+    --surface:#12151d;
+    --surface-2:#171b25;
+    --line:#242a38;
+    --line-soft:#1b2029;
+    --ink:#e9ecf3;
+    --ink-2:#a7b0c0;
+    --ink-3:#7c8798;
+    --accent:#6d8dff;
+    --accent-2:#a273ff;
+    --ok:#3fbf8f;
+    --caution:#e0b354;
+    --warn:#ef6b6b;
+    --unknown:#7b8698;
+    --radius:10px;
+    --pad:clamp(16px, 3vw, 40px);
+    --mono:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    --sans:system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  }
+  *,*::before,*::after{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;
+    background:var(--canvas);
+    color:var(--ink);
+    font-family:var(--sans);
+    font-size:16px;
+    line-height:1.65;
+    overflow-x:hidden;
+  }
+  body::before{
+    content:"";
+    position:fixed;
+    inset:0 0 auto 0;
+    height:1px;
+    background:linear-gradient(90deg, transparent, var(--accent), var(--accent-2), transparent);
+    opacity:.55;
+    z-index:5;
+    pointer-events:none;
+  }
+  a{color:var(--accent);text-decoration:none;overflow-wrap:anywhere}
+  a:hover{color:var(--accent-2);text-decoration:underline}
+  :focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
+  .wrap{padding-left:var(--pad);padding-right:var(--pad)}
+
+  /* ---------- 顶部 ---------- */
+  .top{padding-top:clamp(32px,6vw,64px);padding-bottom:clamp(20px,3vw,28px);border-bottom:1px solid var(--line-soft)}
+  .top-inner{max-width:1480px;margin:0 auto}
+  .eyebrow{
+    display:flex;flex-wrap:wrap;align-items:center;gap:10px;
+    font-family:var(--mono);font-size:12px;letter-spacing:.08em;color:var(--ink-3);
+    text-transform:uppercase;margin:0 0 14px;
+  }
+  .eyebrow b{color:var(--ink-2);font-weight:600;letter-spacing:.04em}
+  h1{
+    margin:0 0 14px;
+    font-size:clamp(30px,4.4vw,54px);
+    line-height:1.08;
+    letter-spacing:-.02em;
+    font-weight:700;
+  }
+  h1 em{
+    font-style:normal;
+    background:linear-gradient(100deg,var(--accent),var(--accent-2));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .lede{max-width:62ch;margin:0 0 26px;color:var(--ink-2);font-size:clamp(15px,1.4vw,17px)}
+
+  /* 许可风险条：本页的记忆点 */
+  .risk{
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    background:linear-gradient(180deg, var(--surface-2), var(--surface));
+    padding:18px 20px 16px;
+    max-width:1480px;
+  }
+  .risk-head{
+    display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;
+    gap:8px;margin-bottom:12px;
+  }
+  .risk-head h2{font-size:14px;margin:0;font-weight:600;letter-spacing:.02em}
+  .risk-head p{margin:0;font-size:12.5px;color:var(--ink-3)}
+  .bar{display:flex;height:12px;border-radius:6px;overflow:hidden;background:var(--line-soft);gap:2px}
+  .seg{display:block;height:100%}
+  .seg-ok{background:var(--ok)}
+  .seg-caution{background:var(--caution)}
+  .seg-warn{background:var(--warn)}
+  .seg-unknown{background:var(--unknown)}
+  .legend{list-style:none;display:flex;flex-wrap:wrap;gap:6px 22px;margin:14px 0 0;padding:0;font-size:13px}
+  .legend li{display:flex;align-items:baseline;gap:7px;color:var(--ink-2)}
+  .legend b{color:var(--ink);font-weight:600}
+  .legend em{font-style:normal;color:var(--ink-3);font-size:12px}
+  .dot{width:9px;height:9px;border-radius:50%;flex:0 0 auto;display:inline-block;transform:translateY(-1px)}
+  .dot-ok{background:var(--ok)}.dot-caution{background:var(--caution)}
+  .dot-warn{background:var(--warn)}.dot-unknown{background:var(--unknown)}
+
+  /* ---------- 分类导航 ---------- */
+  .nav{padding-top:18px;padding-bottom:18px;border-bottom:1px solid var(--line-soft)}
+  .nav ul{list-style:none;display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;max-width:1480px;margin:0 auto}
+  .nav a{
+    display:inline-flex;align-items:center;gap:8px;
+    border:1px solid var(--line);border-radius:999px;
+    padding:6px 12px;font-size:13px;color:var(--ink-2);background:var(--surface);
+  }
+  .nav a:hover{border-color:var(--accent);color:var(--ink);text-decoration:none}
+  .nav-idx{font-family:var(--mono);font-size:11px;color:var(--ink-3)}
+  .nav-count{font-family:var(--mono);font-size:11px;color:var(--accent);background:rgba(109,141,255,.12);padding:0 6px;border-radius:999px}
+
+  /* ---------- 工具栏 ---------- */
+  .toolbar{
+    position:sticky;top:0;z-index:4;
+    background:rgba(10,12,17,.94);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+    padding-top:12px;padding-bottom:12px;
+  }
+  .toolbar-inner{max-width:1480px;margin:0 auto;display:flex;flex-direction:column;gap:10px}
+  .search-row{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+  .search{
+    flex:1 1 260px;min-width:0;position:relative;
+  }
+  .search input{
+    width:100%;padding:9px 12px 9px 34px;
+    background:var(--surface);border:1px solid var(--line);border-radius:8px;
+    color:var(--ink);font-size:14px;font-family:inherit;
+  }
+  .search input::placeholder{color:var(--ink-3)}
+  .search input:focus{border-color:var(--accent);outline:none;box-shadow:0 0 0 3px rgba(109,141,255,.15)}
+  .search svg{position:absolute;left:11px;top:50%;transform:translateY(-50%);opacity:.5}
+  .count{font-size:13px;color:var(--ink-3);font-family:var(--mono);white-space:nowrap}
+  .count b{color:var(--accent);font-weight:600}
+  .chips{display:flex;flex-wrap:wrap;gap:6px}
+  .chips + .chips{margin-top:2px}
+  .chip{
+    display:inline-flex;align-items:center;gap:6px;
+    padding:5px 11px;border-radius:999px;cursor:pointer;
+    background:transparent;border:1px solid var(--line);
+    color:var(--ink-2);font-size:12.5px;font-family:inherit;
+  }
+  .chip:hover{border-color:var(--ink-3);color:var(--ink)}
+  .chip span{font-family:var(--mono);font-size:11px;color:var(--ink-3)}
+  .chip.is-active{background:rgba(109,141,255,.14);border-color:var(--accent);color:var(--ink)}
+  .chip.is-active span{color:var(--accent)}
+  .chip[data-lic="ok"].is-active{background:rgba(63,191,143,.14);border-color:var(--ok)}
+  .chip[data-lic="caution"].is-active{background:rgba(224,179,84,.14);border-color:var(--caution)}
+  .chip[data-lic="warn"].is-active{background:rgba(239,107,107,.14);border-color:var(--warn)}
+  .chip[data-lic="unknown"].is-active{background:rgba(123,134,152,.16);border-color:var(--unknown)}
+
+  /* ---------- 主体 ---------- */
+  main{padding-bottom:clamp(40px,6vw,80px)}
+  .cat{max-width:1480px;margin:0 auto;padding-top:clamp(30px,4vw,48px);scroll-margin-top:110px}
+  .cat-head{
+    display:grid;grid-template-columns:1fr;gap:6px;
+    padding-bottom:14px;margin-bottom:18px;border-bottom:1px solid var(--line-soft);
+  }
+  .cat-title{display:flex;flex-wrap:wrap;align-items:baseline;gap:12px}
+  .cat-idx{font-family:var(--mono);font-size:12px;color:var(--ink-3);letter-spacing:.06em}
+  .cat-title h2{font-size:clamp(19px,2.1vw,24px);margin:0;font-weight:650;letter-spacing:-.01em}
+  .cat-num{font-family:var(--mono);font-size:11.5px;color:var(--ink-3)}
+  .cat-desc{margin:0;color:var(--ink-2);font-size:14px;max-width:76ch}
+  .cat-doc{font-size:12.5px;justify-self:start}
+
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(min(100%,310px),1fr));
+    gap:14px;
+  }
+  .card{
+    min-width:0;
+    display:flex;flex-direction:column;gap:10px;
+    padding:16px 16px 13px;
+    background:var(--surface);
+    border:1px solid var(--line-soft);
+    border-left:2px solid var(--line);
+    border-radius:var(--radius);
+    transition:border-color .18s ease, transform .18s ease, background .18s ease;
+  }
+  .card:hover{border-color:var(--line);border-left-color:var(--accent);background:var(--surface-2);transform:translateY(-2px)}
+  .card[data-lic="warn"]{border-left-color:rgba(239,107,107,.6)}
+  .card[data-lic="caution"]{border-left-color:rgba(224,179,84,.55)}
+  .card[data-lic="ok"]{border-left-color:rgba(63,191,143,.5)}
+  .card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+  .card-name{margin:0;font-size:16px;font-weight:650;letter-spacing:-.01em;overflow-wrap:anywhere}
+  .form{
+    flex:0 0 auto;font-size:11px;color:var(--ink-3);
+    border:1px solid var(--line);border-radius:5px;padding:1px 6px;
+    font-family:var(--mono);
+  }
+  .card-desc{margin:0;font-size:13.5px;color:var(--ink-2);line-height:1.6}
+  .caps{list-style:none;display:flex;flex-wrap:wrap;gap:5px;margin:0;padding:0}
+  .caps li{
+    font-size:11.5px;color:var(--ink-2);
+    background:rgba(255,255,255,.035);
+    border:1px solid var(--line-soft);
+    border-radius:4px;padding:1px 6px;
+  }
+  .note{
+    margin:0;font-size:12px;color:var(--caution);
+    line-height:1.55;
+    border-left:2px solid rgba(224,179,84,.4);
+    padding-left:8px;
+  }
+  .badges{display:flex;flex-wrap:wrap;gap:5px;margin-top:auto;padding-top:2px}
+  .badge{
+    font-size:11px;font-family:var(--mono);
+    padding:1.5px 7px;border-radius:4px;
+    border:1px solid transparent;white-space:nowrap;
+  }
+  .badge.ok{color:var(--ok);background:rgba(63,191,143,.1);border-color:rgba(63,191,143,.28)}
+  .badge.caution{color:var(--caution);background:rgba(224,179,84,.1);border-color:rgba(224,179,84,.28)}
+  .badge.warn{color:var(--warn);background:rgba(239,107,107,.1);border-color:rgba(239,107,107,.3)}
+  .badge.unknown{color:var(--ink-3);background:rgba(123,134,152,.1);border-color:rgba(123,134,152,.25)}
+  .card-foot{
+    display:flex;align-items:baseline;justify-content:space-between;gap:10px;
+    border-top:1px solid var(--line-soft);padding-top:9px;
+    font-size:12px;
+  }
+  .card-foot a{font-family:var(--mono);font-size:11.5px;overflow-wrap:anywhere}
+  .date{font-family:var(--mono);font-size:11px;color:var(--ink-3);white-space:nowrap}
+
+  .empty{
+    max-width:1480px;margin:48px auto;padding:40px 24px;text-align:center;
+    border:1px dashed var(--line);border-radius:var(--radius);color:var(--ink-2);
+  }
+  .empty strong{display:block;color:var(--ink);font-size:16px;margin-bottom:6px}
+  .empty p{margin:0 0 14px;font-size:13.5px}
+  .empty button{
+    font-family:inherit;font-size:13px;padding:6px 14px;border-radius:6px;
+    background:var(--surface-2);color:var(--ink);border:1px solid var(--line);cursor:pointer;
+  }
+  .empty button:hover{border-color:var(--accent)}
+  [hidden]{display:none !important}
+
+  /* ---------- 页脚 ---------- */
+  footer{border-top:1px solid var(--line-soft);padding-top:28px;padding-bottom:56px}
+  .foot-inner{max-width:1480px;margin:0 auto;display:grid;gap:22px;grid-template-columns:1fr}
+  @media (min-width:900px){.foot-inner{grid-template-columns:1.4fr 1fr 1fr}}
+  footer h2{font-size:12px;font-family:var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);margin:0 0 8px;font-weight:600}
+  footer p{margin:0 0 8px;font-size:13px;color:var(--ink-2);max-width:56ch}
+  footer ul{list-style:none;margin:0;padding:0;font-size:13px}
+  footer li{margin-bottom:5px;color:var(--ink-2)}
+  .sig{font-family:var(--mono);font-size:11.5px;color:var(--ink-3);margin-top:10px}
+
+  @media (max-width:640px){
+    body{font-size:15px}
+    .toolbar{position:static}
+    .legend{font-size:12px;gap:4px 14px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{transition:none !important;animation:none !important}
+    .card:hover{transform:none}
+  }
+  @media print{
+    body{background:#fff;color:#111}
+    body::before,.toolbar,.nav,.cat-doc{display:none}
+    .top,.cat,footer{border-color:#ccc}
+    h1 em{color:#111;-webkit-text-fill-color:#111}
+    .risk,.card{background:#fff;border-color:#bbb;break-inside:avoid;box-shadow:none}
+    .card-desc,.cat-desc,footer p,footer li{color:#333}
+    .badge,.caps li{border-color:#bbb;color:#111;background:#fff}
+    .date,.form,.cat-num,.cat-idx,.eyebrow{color:#555}
+    a{color:#111;text-decoration:underline}
+    a[href^="http"]::after{content:" (" attr(href) ")";font-size:9px;word-break:break-all}
+  }
+</style>
+</head>
+<body>
+
+<header class="top wrap">
+  <div class="top-inner">
+    <p class="eyebrow"><b>Voice OSS Radar</b> · v0.1.0 · 更新于 2026-10-27</p>
+    <h1>语音开源雷达<br><em>77 个项目，11 个分类，每条都标了许可</em></h1>
+    <p class="lede">持续收集与核实的语音方向开源项目索引。不只列仓库地址——每个项目都记清它能干什么、坑在哪、代码许可与<b>权重许可</b>能不能商用、什么时候核实的。</p>
+
+    <div class="risk">
+      <div class="risk-head">
+        <h2>先看许可风险：77 个项目里有相当一部分"看着开源，其实不能商用"</h2>
+        <p>代码许可与权重许可分开判定</p>
+      </div>
+      <div class="bar" role="img" aria-label="项目许可分布：可商用、需逐项确认、禁止商用、待确认四类占比">
+        <span class="seg seg-ok" style="flex:55 0 0" title="可商用：55 个（71%）"></span><span class="seg seg-caution" style="flex:3 0 0" title="需逐项确认：3 个（4%）"></span><span class="seg seg-warn" style="flex:2 0 0" title="禁止商用：2 个（3%）"></span><span class="seg seg-unknown" style="flex:17 0 0" title="待确认：17 个（22%）"></span>
+      </div>
+      <ul class="legend">
+<li><span class="dot dot-ok"></span><b>可商用</b> 55 个<em>代码许可允许商业使用</em></li>
+<li><span class="dot dot-caution"></span><b>需逐项确认</b> 3 个<em>传染性开源或非标准许可</em></li>
+<li><span class="dot dot-warn"></span><b>禁止商用</b> 2 个<em>权重或代码明确非商用</em></li>
+<li><span class="dot dot-unknown"></span><b>待确认</b> 17 个<em>未查到明确许可</em></li>
+      </ul>
+    </div>
+  </div>
+</header>
+
+<nav class="nav wrap" aria-label="分类导航">
+  <ul>
+<li><a href="#cat-asr"><span class="nav-idx">01</span>ASR 语音识别<span class="nav-count">12</span></a></li>
+<li><a href="#cat-tts"><span class="nav-idx">02</span>TTS 语音合成<span class="nav-count">15</span></a></li>
+<li><a href="#cat-speech-to-speech"><span class="nav-idx">03</span>全双工 / 端到端语音<span class="nav-count">6</span></a></li>
+<li><a href="#cat-voice-agent"><span class="nav-idx">04</span>语音 Agent 编排<span class="nav-count">6</span></a></li>
+<li><a href="#cat-diarization"><span class="nav-idx">05</span>说话人分离与声纹<span class="nav-count">4</span></a></li>
+<li><a href="#cat-on-device"><span class="nav-idx">06</span>端侧与推理运行时<span class="nav-count">7</span></a></li>
+<li><a href="#cat-audio-frontend"><span class="nav-idx">07</span>音频前端<span class="nav-count">8</span></a></li>
+<li><a href="#cat-voice-conversion"><span class="nav-idx">08</span>变声与语音编辑<span class="nav-count">5</span></a></li>
+<li><a href="#cat-speech-translation"><span class="nav-idx">09</span>语音翻译与同传<span class="nav-count">3</span></a></li>
+<li><a href="#cat-meeting-app"><span class="nav-idx">10</span>会议转写桌面应用<span class="nav-count">9</span></a></li>
+<li><a href="#cat-voice-studio"><span class="nav-idx">11</span>语音创作工作台<span class="nav-count">2</span></a></li>
+  </ul>
+</nav>
+
+<div class="toolbar wrap">
+  <div class="toolbar-inner">
+    <div class="search-row">
+      <div class="search">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4.2-4.2"></path></svg>
+        <label for="q" class="visually-hidden" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">搜索项目</label>
+        <input id="q" type="search" placeholder="搜索项目名、能力、语言、许可……例如 FunASR / 克隆 / 中文" autocomplete="off">
+      </div>
+      <p class="count" role="status" aria-live="polite"><b id="shown">77</b> / 77 个项目</p>
+    </div>
+    <div class="chips" id="cat-chips" role="group" aria-label="按分类筛选">
+<button class="chip is-active" type="button" data-cat="all" aria-pressed="true">全部<span>77</span></button><button class="chip" type="button" data-cat="asr" aria-pressed="false">ASR<span>12</span></button><button class="chip" type="button" data-cat="tts" aria-pressed="false">TTS<span>15</span></button><button class="chip" type="button" data-cat="speech-to-speech" aria-pressed="false">全双工<span>6</span></button><button class="chip" type="button" data-cat="voice-agent" aria-pressed="false">语音<span>6</span></button><button class="chip" type="button" data-cat="diarization" aria-pressed="false">说话人分离与声纹<span>4</span></button><button class="chip" type="button" data-cat="on-device" aria-pressed="false">端侧与推理运行时<span>7</span></button><button class="chip" type="button" data-cat="audio-frontend" aria-pressed="false">音频前端<span>8</span></button><button class="chip" type="button" data-cat="voice-conversion" aria-pressed="false">变声与语音编辑<span>5</span></button><button class="chip" type="button" data-cat="speech-translation" aria-pressed="false">语音翻译与同传<span>3</span></button><button class="chip" type="button" data-cat="meeting-app" aria-pressed="false">会议转写桌面应用<span>9</span></button><button class="chip" type="button" data-cat="voice-studio" aria-pressed="false">语音创作工作台<span>2</span></button>
+    </div>
+    <div class="chips" id="lic-chips" role="group" aria-label="按许可筛选">
+<button class="chip" type="button" data-lic="all" aria-pressed="true">全部许可</button><button class="chip" type="button" data-lic="ok" aria-pressed="false">可商用<span>55</span></button><button class="chip" type="button" data-lic="caution" aria-pressed="false">需逐项确认<span>3</span></button><button class="chip" type="button" data-lic="warn" aria-pressed="false">禁止商用<span>2</span></button><button class="chip" type="button" data-lic="unknown" aria-pressed="false">待确认<span>17</span></button>
+    </div>
+  </div>
+</div>
+
+<main class="wrap">
+    <section class="cat" id="cat-asr" data-cat="asr">
+      <header class="cat-head">
+        <div class="cat-title">
+          <span class="cat-idx">01</span>
+          <h2>ASR 语音识别</h2>
+          <span class="cat-num">12 个项目</span>
+        </div>
+        <p class="cat-desc">把声音变成文字。中文场景的分水岭在 FunASR 系与 Whisper 系之间。</p>
+        <a class="cat-doc" href="https://github.com/xiaopengs/voice-oss-radar/blob/main/docs/01-asr.md" target="_blank" rel="noopener noreferrer">分类详述 →</a>
+      </header>
+      <div class="grid">
+      <article class="card" data-lic="ok" data-search="funasr 阿里达摩院工业级语音识别工具包，中文 asr 的事实标准 流式asr 离线asr vad 标点 时间戳 热词 说话人验证 情感识别 v1.4.0 (2026-07-31) 起提供 9 个自包含 llama.cpp/gguf 运行时 mit zh en yue ja ko">
+        <div class="card-head">
+          <h3 class="card-name">FunASR</h3>
+          <span class="form">工具包</span>
+        </div>
+        <p class="card-desc">阿里达摩院工业级语音识别工具包，中文 ASR 的事实标准</p>
+        <ul class="caps"><li>流式ASR</li><li>离线ASR</li><li>VAD</li><li>标点</li><li>时间戳</li><li>热词</li><li>说话人验证</li><li>情感识别</li></ul>
+        <p class="note"><span aria-hidden="true">⚠</span> v1.4.0 (2026-07-31) 起提供 9 个自包含 llama.cpp/GGUF 运行时</p>
+        <div class="badges">
+          <span class="badge ok">代码 MIT · 可商用</span>
+          
+        </div>
+        <div class="card-foot">
+          <a href="https://github.com/modelscope/FunASR" target="_blank" rel="noopener noreferrer">modelscope/FunASR</a>
+          <span class="date">核实 2026-10</span>
+        </div>
+      </article>
+      <article class="card" data-lic="ok" data-search="sensevoice 非自回归多语言 asr + 情感 + 音频事件，轻量低延迟 多语言asr 情感识别 音频事件检测 轻量部署 sensevoice-small 量化后约 136mb，适合端侧 mit zh en yue ja ko">
+        <div class="card-head">
+          <h3 class="card-name">SenseVoice</h3>
+          <span class="form">模型</span>
+        </div>
+        <p class="card-desc">非自回归多语言 ASR + 情感 + 音频事件，轻量低延迟</p>
+        <ul class="caps"><li>多语言ASR</li><li>情感识别</li><li>音频事件检测</li><li>轻量部署</li></ul>
+        <p class="note"><span aria-hidden="true">⚠</span> SenseVoice-Small 量化后约 136MB，适合端侧</p>
+        <div class="badges">
+          <span class="badge ok">代码 MIT · 可商用</span>
+          <span class="badge unknown">权重 待确认</span>
+        </div>
+        <div class="card-foot">
+          <a href="https://github.com/FunAudioLLM/SenseVoice" target="_blank" rel="noopener noreferrer">FunAudioLLM/SenseVoice</a>
+          <span class="date">核实 2026-10</span>
+        </div>
+      </article>
+      <article class="card" data-lic="ok" data-search="qwen3-asr 开放权重、52 语言的 asr 家族，支持流式与强制对齐 多语言asr 语言识别 时间戳 强制对齐 流式 微调 vllm 约 13.5k→3.6k stars 区间波动，以仓库为准；0.6b/1.7b 有 int8 端侧导出 apache-2.0 52 languages">
+        <div class="card-head">
+          <h3 class="card-name">Qwen3-ASR</h3>
+          <span class="form">模型</span>
+        </div>
+        <p class="card-desc">开放权重、52 语言的 ASR 家族，支持流式与强制对齐</p>
+        <ul class="caps"><li>多语言ASR</li><li>语言识别</li><li>时间戳</li><li>强制对齐</li><li>流式</li><li>微调</li><li>vLLM</li></ul>
+        <p class="note"><span aria-hidden="true">⚠</span> 约 13.5k→3.6k stars 区间波动，以仓库为准；0.6B/1.7B 有 int8 端侧导出</p>
+        <div class="badges">
+          <span class="badge ok">代码 Apache-2.0 · 可商用</span>
+          <span class="badge ok">权重 Apache-2.0 · 可商用</span>
+        </div>
+        <div class="card-foot">
+          <a href="https://github.com/QwenLM/Qwen3-ASR" target="_blank" rel="noopener noreferrer">QwenLM/Qwen3-ASR</a>
+          <span class="date">核实 2026-10</span>
+        </div>
+      </article>
+      <article class="card" data-lic="ok" data-search="glm-asr 智谱 1.5b 语音识别模型，中文与方言表现突出 中文asr 方言 标点 轻量 glm-asr-nano-2512；社区有 ctc head 版本 glm-asr-ctc apache-2.0 zh en dialect">
+        <div class="card-head">
+          <h3 class="card-name">GLM-ASR</h3>
+          <span class="form">模型</span>
+        </div>
+        <p class="card-desc">智谱 1.5B 语音识别模型，中文与方言表现突出</p>
+        <ul class="caps"><li>中文ASR</li><li>方言</li><li>标点</li><li>轻量</li></ul>
+        <p class="note"><span aria-hidden="true">⚠</span> GLM-ASR-Nano-2512；社区有 CTC head 版本 glm-asr-ctc</p>
+        <div class="badges">
+          <span class="badge ok">代码 Apache-2.0 · 可商用</span>
+          
+        </div>
+        <div class="card-foot">
+          <a href="https://github.com/zai-org/GLM-ASR" target="_blank" rel="noopener noreferrer">zai-org/GLM-ASR</a>
+          <span class="date">核实 2026-10</span>
+        </div>
+      </article>
+      <article class="card" data-lic="ok" data-search="whisper 多语种 asr 的历史基线，中文弱、易幻觉、无原生流式 多语言asr 翻译到英文 时间戳 中文正式会议不建议直接用；large-v3 为常用档 mit 99 languages">
+        <div class="card-head">
+          <h3 class="card-name">Whisper</h3>
+          <span class="form">模型</span>
+        </div>
+        <p class="card-desc">多语种 ASR 的历史基线，中文弱、易幻觉、无原生流式</p>
+        <ul class="caps"><li>多语言ASR</li><li>翻译到英文</li><li>时间戳</li></ul>
+        <p class="note"><span aria-hidden="true">⚠</span> 中文正式会议不建议直接用；large-v3 为常用档</p>
+        <div class="badges">
+          <span class="badge ok">代码 MIT · 可商用</span>
+          <span class="badge ok">权重 MIT · 可商用</span>
+        </div>
+        <div class="card-foot">
+          <a href="https://github.com/openai/whisper" target="_blank" rel="noopener noreferrer">openai/whisper</a>
+          <span class="date">核实 2026-10</span>
+        </div>
+      </article>
+      <article class="card" data-lic="ok" data-search="faster-whisper ctranslate2 实现的 whisper，4 倍加速、int8 量化 whisper推理加速 int8 vad串联 词级时间戳  mit 99 languages">
+        <div class="card-head">
+          <h3 class="card-name">faster-whisper</h3>
+          <span class="form">运行时</span>
+        </div>
+        <p class="card-desc">CTranslate2 实现的 Whisper，4 倍加速、int8 量化</p>
+        <ul class="caps"><li>Whisper推理加速</li><li>int8</li><li>VAD串联</li><li>词级时间戳</li></ul>
+        
+        <div class="badges">
+          <span class="badge ok">代码 MIT · 可商用</span>
+          
+        </div>
+        <div class="card-foot">
+          <a href="https://github.com/SYSTRAN/faster-whisper" target="_blank" rel="noopener noreferrer">SYSTRAN/faster-whisper</a>
+          <span class="date">核实 2026-10</span>
+        </div>
+      </article>
+      <article class="card" data-lic="ok" data-search="whisperx whisper + wav2vec2 对齐 + pyannote 分离，会议转写常用组合 词级时间戳 vad 说话人分离 批处理 diarization 依赖 pyannote 权重（需 hf token） bsd-2-clause 99 languages">
+        <div class="card-head">
+          <h3 class="card-name">WhisperX</h3>
+          <span class="form">pipeline</span>
+        </div>
+        <p class="card-desc">Whisper + wav2vec2 对齐 + pyannote 分离，会议转写常用组合</p>
+        <ul class="caps"><li>词级时间戳</li><li>VAD</li><li>说话人分离</li><li>批处理</li></ul>
+        <p class="note"><span aria-hidden="true">⚠</span> diarization 依赖 pyannote 权重（需 HF token）</p>
+        <div class="badges">
+          <span class="badge ok">代码 BSD-2-Clause · 可商用</span>
+          
+        </div>
+        <div class="card-foot">
+          <a href="https://github.com/m-bain/whisperX" target="_blank" rel="noopener noreferrer">m-bain/whisperX</a>
+          <span class="date">核实 2026-10</span>
+        </div>
+      </article>
+      <article class="card" data-lic="ok" data-search="parakeet (nemo) nvidia 0.6b tdt 模型，欧洲语言 wer 领先，常作会议应用默认 多语言asr 标点 时间戳 gpu加速 parakeet-tdt-0.6b-v3 官方标称 1.94% wer（conversationaly 引用） apache-2.0 25 european languages">
+        <div class="card-head">
+          <h3 class="card-name">Parakeet (NeMo)</h3>
+          <span class="form">模型</span>
+        </div>
+        <p class="card-desc">NVIDIA 0.6B TDT 模型，欧洲语言 WER 领先，常作会议应用默认</p>
+        <ul class="caps"><li>多语言ASR</li><li>标点</li><li>时间戳</li><li>GPU加速</li></ul>
+        <p class="note"><span aria-hidden="true">⚠</span> parakeet-tdt-0.6b-v3 官方标称 1.94% WER（Conversationaly 引用）</p>
+        <div class="badges">
+          <span class="badge ok">代码 Apache-2.0 · 可商用</span>
+          <span class="badge caution">权重 CC-BY-4.0 · 需逐项确认</span>
+        </div>
+        <div class="card-foot">
+          <a href="https://github.com/NVIDIA/NeMo" target="_blank" rel="noopener noreferrer">NVIDIA/NeMo</a>
+          <span class="date">核实 2026-10</span>
+        </div>
+      </article>
+      <article class="card" data-lic="ok" data-search="wenet 生产级流式 asr 工具包（zipformer） 流式asr 端到端建模 部署工具链  apache-2.0 zh en">
+        <div class="card-head">
+          <h3 class="card-name">WeNet</h3>
+          <span class="form">工具包</span>
+        </div>
+        <p class="card-desc">生产级流式 ASR 工具包（Zipformer）</p>
+        <ul class="caps"><li>流式ASR</li><li>端到端建模</li><li>部署工具链</li></ul>
+        
+        <div class="badges">
+          <span class="badge ok">代码 Apache-2.0 · 可商用</span>
+          
+        </div>
+        <div class="card-foot">
+          <a href="https://github.com/wenet-e2e/wenet" target="_blank" rel="noopener noreferrer">wenet-e2e/wenet</a>
+          <span class="date">核实 2026-10</span>
+        </div>
+      </article>
+      <article class="card" data-lic="ok" data-search="voxtral mistral 的语音理解模型（asr + 音频问答） asr 音频理解 长音频  apache-2.0 multi">
+        <div class="card-head">
+          <h3 class="card-name">Voxtral</h3>
+          <span class="form">模型</span>
+        </div>
+        <p class="card-desc">Mistral 的语音理解模型（ASR + 音频问答）</p>
+        <ul class="caps"><li>ASR</li><li>音频理解</li><li>长音频</li></ul>
+        
+        <div class="badges">
+          <span class="badge ok">代码 Apache-2.0 · 可商用</span>
+          
+        </div>
+        <div class="card-foot">
+          <a href="https://github.com/mistralai" target="_blank" rel="noopener noreferrer">mistralai</a>
+          <span class="date">核实 2026-10</span>
+        </div>
+      </article>
+      <article class="card" data-lic="ok" data-search="cocktailasr-1 目标说话人 asr（只转写指定人声），含负样本拒识 目标说话人asr 负样本拒识 cot librimix 3mix 约 12.29% wer；适合多人混说场景 apache-2.0 en">
+        <div class="card-head">
+          <h3 class="card-name">CocktailASR-1</h3>
+          <span class="form">模型</span>
+        </div>
+        <p class="card-desc">目标说话人 ASR（只转写指定人声），含负样本拒识</p>
+        <ul class="caps"><li>目标说话人ASR</li><li>负样本拒识</li><li>CoT</li></ul>
+        <p class="note"><span aria-hidden="true">⚠</span> LibriMix 3mix 约 12.29% WER；适合多人混说场景</p>
+        <div class="badges">
+          <span class="badge ok">代码 Apache-2.0 · 可商用</span>
+          
+        </div>
+        <div class="card-foot">
+          <a href="https://github.com/XiaomiMiMo/CocktailASR" target="_blank" rel="noopener noreferrer">XiaomiMiMo/CocktailASR</a>
+          <span class="date">核实 2026-10</span>
+        </div>
+      </article>
+      <article class="card" data-lic="ok" data-search="moss-transcribe-diarize 一次前向输出转写 + 时间戳 + 说话人标签 长音频转写 说话人分离 一体化 funasr 已支持 automodel 接入 apache-2.0 zh en">
+        <div class="card-head">
+          <h3 class="card-name">MOSS-Transcribe-Diarize</h3>
+          <span class="form">模型</span>
+        </div>
+        <p class="card-desc">一次前向输出转写 + 时间戳 + 说话人标签</p>
+        <ul class="caps"><li>长音频转写</li><li>说话人分离</li><li>一体化</li></ul>
+        <p class="note"><span aria-hidden="true">⚠</span> FunASR 已支持 AutoModel 接入</p>
+        <div class="badges">
+          <span class="badge ok">代码 Apache-2.0 · 可商用</span>
+          
+        </div>
+        <div class="card-foot">
+          <a href="https://huggingface.co/OpenMOSS-Team" target="_blank" rel="noopener noreferrer">https://huggingface.co/OpenMOSS-Team</a>
+          <span class="date">核实 2026-10</span>
+        </div>
+      </article>
+      </div>
+    </section>
+
+    <section class="cat" id="cat-tts" data-cat="tts">
+      <header class="cat-head">
+        <div class="cat-title">
+          <span class="cat-idx">02</span>
+          <h2>TTS 语音合成</h2>
+          <span class="cat-num">15 个项目</span>
+        </div>
+        <p class="cat-desc">文字变声音。2026 年的竞争轴是克隆一致性、可控性与单位成本。</p>
+        <a class="cat-doc" href="https://github.com/xiaopengs/voice-oss-radar/blob/main/docs/02-tts.md" target="_blank" rel="noopener noreferrer">分类详述 →</a>
+      </header>
+      <div class="grid">
+      <article class="card" data-lic="ok" data-search="qwen3-tts 覆盖流式、声音设计、克隆的开放权重 tts，商用最友好 流式tts 声音设计 零样本克隆 vllm 微调 webui  apache-2.0 10 languages">
+        <div class="card-head">
+          <h3 class="card-name">Qwen3-TTS</h3>
+          <span class="form">模型</span>
+        </div>
+        <p class="card-desc">覆盖流式、声音设计、克隆的开放权重 TTS，商用最友好</p>
+        <ul class="caps"><li>流式TTS</li><li>声音设计</li><li>零样本克隆</li><li>vLLM</li><li>微调</li><li>WebUI</li></ul>
+        
+        <div class="badges">
+          <span class="badge ok">代码 Apache-2.0 · 可商用</span>
+          <span class="badge ok">权重 Apache-2.0 · 可商用</span>
+        </div>
+        <div class="card-foot">
+          <a href="https://github.com/QwenLM/Qwen3-TTS" target="_blank" rel="noopener noreferrer">QwenLM/Qwen3-TTS</a>
+          <span class="date">核实 2026-10</span>
+        </div>
+      </article>
+      <article class="card" data-lic="ok" data-search="omnivoice 600+ 语言的零样本克隆 + 指令化声音设计，rtf 低至 0.025 零样本克隆 声音设计 非言语符号 拼音/音标纠音 批量cli flashinfer ⚠️ 权重 cc-by-nc 不可商用；voicestudio 默认 tts 引擎之一 apache-2.0 600+ languages">
+        <div class="card-head">
+          <h3 class="card-name">OmniVoice</h3>
+          <span class="form">模型</span>
+        </div>
+        <p class="card-desc">600+ 语言的零样本克隆 + 指令化声音设计，RTF 低至 0.025</p>
+        <ul class="caps"><li>零样本克隆</li><li>声音设计</li><li>非言语符号</li><li>拼音/音标纠音</li><li>批量CLI</li><li>FlashInfer</li></ul>
+        <p class="note"><span aria-hidden="true">⚠</span> 权重 CC-BY-NC 不可商用；VoiceStudio 默认 TTS 引擎之一</p>
+        <div class="badges">
+          <span class="badge ok">代码 Apache-2.0 · 可商用</span>
+          <span class="badge warn">权重 CC-BY-NC-4.0 · 禁止商用</span>
+        </div>
+        <div class="card-foot">
+          <a href="https://github.com/k2-fsa/OmniVoice" target="_blank" rel="noopener noreferrer">k2-fsa/OmniVoice</a>
+          <span class="date">核实 2026-10</span>
+        </div>
+      </article>
+      <article class="card" data-lic="ok" data-search="cosyvoice 中文听感第一梯队，支持流式与自然语言指令控制 零样本克隆 流式tts 指令控制 方言 版本间接口有破坏性变更，需锁版本 apache-2.0 zh en ja yue ko">
+        <div class="card-head">
+          <h3 class="card-name">CosyVoice</h3>
+          <span class="form">模型</span>
+        </div>
+        <p class="card-desc">中文听感第一梯队，支持流式与自然语言指令控制</p>
+        <ul class="caps"><li>零样本克隆</li><li>流式TTS</li><li>指令控制</li><li>方言</li></ul>
+        <p class="note"><span aria-hidden="true">⚠</span> 版本间接口有破坏性变更，需锁版本</p>
+        <div class="badges">
+          <span class="badge ok">代码 Apache-2.0 · 可商用</span>
+          <span class="badge unknown">权重 待确认</span>
+        </div>
+        <div class="card-foot">
+          <a href="https://github.com/FunAudioLLM/CosyVoice" target="_blank" rel="noopener noreferrer">FunAudioLLM/CosyVoice</a>
+          <span class="date">核实 2026-10</span>
+        </div>
+      </article>
+      <article class="card" data-lic="ok" data-search="indextts 中文零样本 tts，第二代支持精确时长控制与情感迁移 零样本克隆 时长控制 情感迁移  apache-2.0 zh en">
+        <div class="card-head">
+          <h3 class="card-name">IndexTTS</h3>
+          <span class="form">模型</span>
+        </div>
+        <p class="card-desc">中文零样本 TTS，第二代支持精确时长控制与情感迁移</p>
+        <ul class="caps"><li>零样本克隆</li><li>时长控制</li><li>情感迁移</li></ul>
+        
+        <div class="badges">
+          <span class="badge ok">代码 Apache-2.0 · 可商用</span>
+          <span class="badge unknown">权重 待确认</span>
+        </div>
+        <div class="card-foot">
+          <a href="https://github.com/index-tts/index-tts" target="_blank" rel="noopener noreferrer">index-tts/index-tts</a>
+          <span class="date">核实 2026-10</span>
+        </div>
+      </article>
+      <article class="card" data-lic="ok" data-search="gpt-sovits 1 分钟数据少样本微调，中文社区生态最成熟 少样本微调 零样本 webui全流程 每个音色需单独训练，规模化成本高；非流式 mit zh en ja ko yue">
+        <div class="card-head">
+          <h3 class="card-name">GPT-SoVITS</h3>
+          <span class="form">工具包</span>
+        </div>
+        <p class="card-desc">1 分钟数据少样本微调，中文社区生态最成熟</p>
+        <ul class="caps"><li>少样本微调</li><li>零样本</li><li>WebUI全流程</li></ul>
+        <p class="note"><span aria-hidden="true">⚠</span> 每个音色需单独训练，规模化成本高；非流式</p>
+        <div class="badges">
+          <span class="badge ok">代码 MIT · 可商用</span>
+          
+        </div>
+        <div class="card-foot">
+          <a href="https://github.com/RVC-Boss/GPT-SoVITS" target="_blank" rel="noopener noreferrer">RVC-Boss/GPT-SoVITS</a>
+          <span class="date">核实 2026-10</span>
+        </div>
+      </article>
+      <article class="card" data-lic="ok" data-search="f5-tts flow matching 架构，长文本低幻觉 零样本克隆 长文本稳定 速度控制  mit zh en">
+        <div class="card-head">
+          <h3 class="card-name">F5-TTS</h3>
+          <span class="form">模型</span>
+        </div>
+        <p class="card-desc">Flow matching 架构，长文本低幻觉</p>
+        <ul class="caps"><li>零样本克隆</li><li>长文本稳定</li><li>速度控制</li></ul>
+        
+        <div class="badges">
+          <span class="badge ok">代码 MIT · 可商用</span>
+          <span class="badge warn">权重 CC-BY-NC · 禁止商用</span>
+        </div>
+        <div class="card-foot">
+          <a href="https://github.com/SWivid/F5-TTS" target="_blank" rel="noopener noreferrer">SWivid/F5-TTS</a>
+          <span class="date">核实 2026-10</span>
+        </div>
+      </article>
+      <article class="card" data-lic="ok" data-search="openvoice v2 拆成&quot;tts 基座 + 音色转换器&quot;，转换仅约 100ms 音色转换 跨语言克隆 轻量转换器 必须 pip install melotts 作基座；约 37.6k stars mit multi">
+        <div class="card-head">
+          <h3 class="card-name">OpenVoice v2</h3>
+          <span class="form">模型</span>
+        </div>
+        <p class="card-desc">拆成&quot;TTS 基座 + 音色转换器&quot;，转换仅约 100ms</p>
+        <ul class="caps"><li>音色转换</li><li>跨语言克隆</li><li>轻量转换器</li></ul>
+        <p class="note"><span aria-hidden="true">⚠</span> 必须 pip install MeloTTS 作基座；约 37.6k stars</p>
+        <div class="badges">
+          <span class="badge ok">代码 MIT · 可商用</span>
+          
+        </div>
+        <div class="card-foot">
+          <a href="https://github.com/myshell-ai/OpenVoice" target="_blank" rel="noopener noreferrer">myshell-ai/OpenVoice</a>
+          <span class="date">核实 2026-10</span>
+        </div>
+      </article>
+      <article class="card" data-lic="ok" data-search="coqui tts / xtts-v2 生态最全的经典 tts 工具包，xtts 权重非商用 多模型 零样本克隆 训练工具链 公司已关闭，社区维护；约 46k stars mpl-2.0 17 languages">
+        <div class="card-head">
+          <h3 class="card-name">Coqui TTS / XTTS-v2</h3>
+          <span class="form">工具包</span>
+        </div>
+        <p class="card-desc">生态最全的经典 TTS 工具包，XTTS 权重非商用</p>
+        <ul class="caps"><li>多模型</li><li>零样本克隆</li><li>训练工具链</li></ul>
+        <p class="note"><span aria-hidden="true">⚠</span> 公司已关闭，社区维护；约 46k stars</p>
+        <div class="badges">
+          <span class="badge ok">代码 MPL-2.0 · 可商用</span>
+          <span class="badge warn">权重 CPML · 禁止商用</span>
+        </div>
+        <div class="card-foot">
+          <a href="https://github.com/coqui-ai/TTS" target="_blank" rel="noopener noreferrer">coqui-ai/TTS</a>
+          <span class="date">核实 2026-10</span>
+        </div>
+      </article>
+      <article class="card" data-lic="ok" data-search="kokoro 82m 超轻量 tts，质量/体积比极高 轻量tts 本地部署 多音色  apache-2.0 multi">
+        <div class="card-head">
+          <h3 class="card-name">Kokoro</h3>
+          <span class="form">模型</span>
+        </div>
+        <p class="card-desc">82M 超轻量 TTS，质量/体积比极高</p>
+        <ul class="caps"><li>轻量TTS</li><li>本地部署</li><li>多音色</li></ul>
+        
+        <div class="badges">
+          <span class="badge ok">代码 Apache-2.0 · 可商用</span>
+          
+        </div>
+        <div class="card-foot">
+          <a href="https://github.com/hexgrad/kokoro" target="_blank" rel="noopener noreferrer">hexgrad/kokoro</a>
+          <span class="date">核实 2026-10</span>
+        </div>
+      </article>
+      <article class="card" data-lic="ok" data-search="piper 端侧 tts 标准方案，树莓派可跑 端侧tts 多语言 极低延迟  mit 30+ languages">
+        <div class="card-head">
+          <h3 class="card-name">Piper</h3>
+          <span class="form">运行时</span>
+        </div>
+        <p class="card-desc">端侧 TTS 标准方案，树莓派可跑</p>
+        <ul class="caps"><li>端侧TTS</li><li>多语言</li><li>极低延迟</li></ul>
+        
+        <div class="badges">
+          <span class="badge ok">代码 MIT · 可商用</span>
+          
+        </div>
+        <div class="card-foot">
+          <a href="https://github.com/rhasspy/piper" target="_blank" rel="noopener noreferrer">rhasspy/piper</a>
+          <span class="date">核实 2026-10</span>
+        </div>
+      </article>
+      <article class="card" data-lic="ok" data-search="melotts 轻量多语 tts，常作克隆方案的基座 轻量tts 多语言 cpu可用  mit zh en ja ko es fr">
+        <div class="card-head">
+          <h3 class="card-name">MeloTTS</h3>
+          <span class="form">模型</span>
+        </div>
+        <p class="card-desc">轻量多语 TTS，常作克隆方案的基座</p>
+        <ul class="caps"><li>轻量TTS</li><li>多语言</li><li>CPU可用</li></ul>
+        
+        <div class="badges">
+          <span class="badge ok">代码 MIT · 可商用</span>
+          
+        </div>
+        <div class="card-foot">
+          <a href="https://github.com/myshell-ai/MeloTTS" target="_blank" rel="noopener noreferrer">myshell-ai/MeloTTS</a>
+          <span class="date">核实 2026-10</span>
+        </div>
+      </article>
+      <article class="card" data-lic="ok" data-search="chatterbox 0.5b 开源 tts，情绪夸张度可调 零样本克隆 情绪控制 多语  mit multi">
+        <div class="card-head">
+          <h3 class="card-name">Chatterbox</h3>
+          <span class="form">模型</span>
+        </div>
+        <p class="card-desc">0.5B 开源 TTS，情绪夸张度可调</p>
+        <ul class="caps"><li>零样本克隆</li><li>情绪控制</li><li>多语</li></ul>
+        
+        <div class="badges">
+          <span class="badge ok">代码 MIT · 可商用</span>
+          
+        </div>
+        <div class="card-foot">
+          <a href="https://github.com/resemble-ai/chatterbox" target="_blank" rel="noopener noreferrer">resemble-ai/chatterbox</a>
+          <span class="date">核实 2026-10</span>
+        </div>
+      </article>
+      <article class="card" data-lic="unknown" data-search="fish-speech 多语零样本克隆，社区活跃 零样本克隆 多语言  unknown multi">
+        <div class="card-head">
+          <h3 class="card-name">Fish-Speech</h3>
+          <span class="form">模型</span>
+        </div>
+        <p class="card-desc">多语零样本克隆，社区活跃</p>
+        <ul class="caps"><li>零样本克隆</li><li>多语言</li></ul>
+        
+        <div class="badges">
+          <span class="badge unknown">代码 unknown · 许可待确认</span>
+          
+        </div>
+        <div class="card-foot">
+          <a href="https://github.com/fishaudio/fish-speech" target="_blank" rel="noopener noreferrer">fishaudio/fish-speech</a>
+          <span class="date">核实 2026-10</span>
+        </div>
+      </article>
+      <article class="card" data-lic="unknown" data-search="spark-tts 基于 llm 的简洁 tts 架构 零样本克隆 声音属性控制  unknown zh en">
+        <div class="card-head">
+          <h3 class="card-name">Spark-TTS</h3>
+          <span class="form">模型</span>
+        </div>
+        <p class="card-desc">基于 LLM 的简洁 TTS 架构</p>
+        <ul class="caps"><li>零样本克隆</li><li>声音属性控制</li></ul>
+        
+        <div class="badges">
+          <span class="badge unknown">代码 unknown · 许可待确认</span>
+          
+        </div>
+        <div class="card-foot">
+          <a href="https://github.com/SparkAudio/Spark-TTS" target="_blank" rel="noopener noreferrer">SparkAudio/Spark-TTS</a>
+          <span class="date">核实 2026-10</span>
+        </div>
+      </article>
+      <article class="card" data-lic="unknown" data-search="pocket tts 100m 模型，cpu 上快于实时，一行代码接入 超轻量tts cpu实时 多语言  unknown multi">
+        <div class="card-head">
+          <h3 class="card-name">Pocket TTS</h3>
+          <span class="form">模型</span>
+        </div>
+        <p class="card-desc">100M 模型，CPU 上快于实时，一行代码接入</p>
+        <ul class="caps"><li>超轻量TTS</li><li>CPU实时</li><li>多语言</li></ul>
+        
+        <div class="badges">
+          <span class="badge unknown">代码 unknown · 许可待确认</span>
+          
+        </div>
+        <div class="card-foot">
+          <a href="https://github.com/kyutai-labs" target="_blank" rel="noopener noreferrer">kyutai-labs</a>
+          <span class="date">核实 2026-10</span>
+        </div>
+      </article>
+      </div>
+    </section>
+
+    <section class="cat" id="cat-speech-to-speech" data-cat="speech-to-speech">
+      <header class="cat-head">
+        <div class="cat-title">
+          <span class="cat-idx">03</span>
+          <h2>全双工 / 端到端语音</h2>
+          <span class="cat-num">6 个项目</span>
+        </div>
+        <p class="cat-desc">语音进、语音出，跳过文本瓶颈，换取低延迟与副语言感知。</p>
+        <a class="cat-doc" href="https://github.com/xiaopengs/voice-oss-radar/blob/main/docs/03-speech-to-speech.md" target="_blank" rel="noopener noreferrer">分类详述 →</a>
+      </header>
+      <div class="grid">
+      <article class="card" data-lic="ok" data-search="moshi 首个开源全双工语音对话模型，底层 mimi codec 全双工对话 可打断 副语言感知 pytorch/mlx/rust 代码 apache-2.0 + mit 双许可；微调见 moshi-finetune apache-2.0 en">
+        <div class="card-head">
+          <h3 class="card-name">Moshi</h3>
+          <span class="form">模型</span>
+        </div>
+        <p class="card-desc">首个开源全双工语音对话模型，底层 Mimi codec</p>
+        <ul class="caps"><li>全双工对话</li><li>可打断</li><li>副语言感知</li><li>PyTorch/MLX/Rust</li></ul>
+        <p class="note"><span aria-hidden="true">⚠</span> 代码 Apache-2.0 + MIT 双许可；微调见 moshi-finetune</p>
+        <div class="badges">
+          <span class="badge ok">代码 Apache-2.0 · 可商用</span>
+          <span class="badge caution">权重 CC-BY-4.0 · 需逐项确认</span>
+        </div>
+        <div class="card-foot">
+          <a href="https://github.com/kyutai-labs/moshi" target="_blank" rel="noopener noreferrer">kyutai-labs/moshi</a>
+          <span class="date">核实 2026-10</span>
+        </div>
+      </article>
+      <article class="card" data-lic="ok" data-search="qwen-omni (2.5/3) thinker-talker 双塔，语音/图像/文本输入，语音+文本输出 语音对话 语音理解 多模态 中文强 非严格全双工，打断体验需自建 apache-2.0 multi">
+        <div class="card-head">
+          <h3 class="card-name">Qwen-Omni (2.5/3)</h3>
+          <span class="form">模型</span>
+        </div>
+        <p class="card-desc">Thinker-Talker 双塔，语音/图像/文本输入，语音+文本输出</p>
+        <ul class="caps"><li>语音对话</li><li>语音理解</li><li>多模态</li><li>中文强</li></ul>
+        <p class="note"><span aria-hidden="true">⚠</span> 非严格全双工，打断体验需自建</p>
+        <div class="badges">
+          <span class="badge ok">代码 Apache-2.0 · 可商用</span>
+          
+        </div>
+        <div class="card-foot">
+          <a href="https://github.com/QwenLM/Qwen2.5-Omni" target="_blank" rel="noopener noreferrer">QwenLM/Qwen2.5-Omni</a>
+          <span class="date">核实 2026-10</span>
+        </div>
+      </article>
+      <article class="card" data-lic="ok" data-search="glm-4-voice 端到端中文语音对话，情绪与语速可指令调节 端到端语音对话 情绪控制 语速控制 流式  apache-2.0 zh en">
+        <div class="card-head">
+          <h3 class="card-name">GLM-4-Voice</h3>
+          <span class="form">模型</span>
+        </div>
+        <p class="card-desc">端到端中文语音对话，情绪与语速可指令调节</p>
+        <ul class="caps"><li>端到端语音对话</li><li>情绪控制</li><li>语速控制</li><li>流式</li></ul>
+        
+        <div class="badges">
+          <span class="badge ok">代码 Apache-2.0 · 可商用</span>
+          
+        </div>
+        <div class="card-foot">
+          <a href="https://github.com/THUDM/GLM-4-Voice" target="_blank" rel="noopener noreferrer">THUDM/GLM-4-Voice</a>
+          <span class="date">核实 2026-10</span>
+        </div>
+      </article>
+      <article class="card" data-lic="ok" data-search="step-audio 2 面向真实业务的端到端语音大模型，强调副语言理解与工具调用 端到端语音 副语言理解 工具调用 语音rag  apache-2.0 zh en">
+        <div class="card-head">
+          <h3 class="card-name">Step-Audio 2</h3>
+          <span class="form">模型</span>
+        </div>
+        <p class="card-desc">面向真实业务的端到端语音大模型，强调副语言理解与工具调用</p>
+        <ul class="caps"><li>端到端语音</li><li>副语言理解</li><li>工具调用</li><li>语音RAG</li></ul>
+        
+        <div class="badges">
+          <span class="badge ok">代码 Apache-2.0 · 可商用</span>
+          
+        </div>
+        <div class="card-foot">
+          <a href="https://github.com/stepfun-ai/Step-Audio2" target="_blank" rel="noopener noreferrer">stepfun-ai/Step-Audio2</a>
+          <span class="date">核实 2026-10</span>
+        </div>
+      </article>
+      <article class="card" data-lic="ok" data-search="ultravox 轻量语音 llm（语音进、文本出），易微调 语音理解 语音问答 微调  mit multi">
+        <div class="card-head">
+          <h3 class="card-name">Ultravox</h3>
+          <span class="form">模型</span>
+        </div>
+        <p class="card-desc">轻量语音 LLM（语音进、文本出），易微调</p>
+        <ul class="caps"><li>语音理解</li><li>语音问答</li><li>微调</li></ul>
+        
+        <div class="badges">
+          <span class="badge ok">代码 MIT · 可商用</span>
+          
+        </div>
+        <div class="card-foot">
+          <a href="https://github.com/fixie-ai/ultravox" target="_blank" rel="noopener noreferrer">fixie-ai/ultravox</a>
+          <span class="date">核实 2026-10</span>
+        </div>
+      </article>
+      <article class="card" data-lic="unknown" data-search="minicpm-o 端侧多模态实时语音对话 端侧多模态 实时语音对话  unknown zh en">
+        <div class="card-head">
+          <h3 class="card-name">MiniCPM-o</h3>
+          <span class="form">模型</span>
+        </div>
+        <p class="card-desc">端侧多模态实时语音对话</p>
+        <ul class="caps"><li>端侧多模态</li><li>实时语音对话</li></ul>
+        
+        <div class="badges">
+          <span class="badge unknown">代码 unknown · 许可待确认</span>
+          
+        </div>
+        <div class="card-foot">
+          <a href="https://github.com/OpenBMB/MiniCPM-o" target="_blank" rel="noopener noreferrer">OpenBMB/MiniCPM-o</a>
+          <span class="date">核实 2026-10</span>
+        </div>
+      </article>
+      </div>
+    </section>
+
+    <section class="cat" id="cat-voice-agent" data-cat="voice-agent">
+      <header class="cat-head">
+        <div class="cat-title">
+          <span class="cat-idx">04</span>
+          <h2>语音 Agent 编排</h2>
+          <span class="cat-num">6 个项目</span>
+        </div>
+        <p class="cat-desc">不产出能力，产出链路：传输、VAD、打断、工具调用、观测。</p>
+        <a class="cat-doc" href="https://github.com/xiaopengs/voice-oss-radar/blob/main/docs/04-voice-agent.md" target="_blank" rel="noopener noreferrer">分类详述 →</a>
+      </header>
+      <div class="grid">
+      <article class="card" data-lic="unknown" data-search="unmute 给任意文本 llm 加&quot;听说&quot;能力，低延迟串联 stt+tts串联 任意llm接入  unknown multi">
+        <div class="card-head">
+          <h3 class="card-name">Unmute</h3>
+          <span class="form">框架</span>
+        </div>
+        <p class="card-desc">给任意文本 LLM 加&quot;听说&quot;能力，低延迟串联</p>
+        <ul class="caps"><li>STT+TTS串联</li><li>任意LLM接入</li></ul>
+        
+        <div class="badges">
+          <span class="badge unknown">代码 unknown · 许可待确认</span>
+          
+        </div>
+        <div class="card-foot">
+          <a href="https://github.com/kyutai-labs/unmute" target="_blank" rel="noopener noreferrer">kyutai-labs/unmute</a>
+          <span class="date">核实 2026-10</span>
+        </div>
+      </article>
+      <article class="card" data-lic="ok" data-search="livekit agents 生产级实时语音 agent 框架，webrtc + sip 基础设施完备 webrtc sip电话 多人房间 打断 多agent交接 可自托管  apache-2.0 py js">
+        <div class="card-head">
+          <h3 class="card-name">LiveKit Agents</h3>
+          <span class="form">框架</span>
+        </div>
+        <p class="card-desc">生产级实时语音 Agent 框架，WebRTC + SIP 基础设施完备</p>
+        <ul class="caps"><li>WebRTC</li><li>SIP电话</li><li>多人房间</li><li>打断</li><li>多Agent交接</li><li>可自托管</li></ul>
+        
+        <div class="badges">
+          <span class="badge ok">代码 Apache-2.0 · 可商用</span>
+          
+        </div>
+        <div class="card-foot">
+          <a href="https://github.com/livekit/agents" target="_blank" rel="noopener noreferrer">livekit/agents</a>
+          <span class="date">核实 2026-10</span>
+        </div>
+      </article>
+      <article class="card" data-lic="ok" data-search="pipecat python pipeline 式语音 agent 框架，组件全可插拔 可插拔pipeline webrtc/ws/本地音频 打断 实时模型接入  bsd-2-clause py">
+        <div class="card-head">
+          <h3 class="card-name">Pipecat</h3>
+          <span class="form">框架</span>
+        </div>
+        <p class="card-desc">Python pipeline 式语音 Agent 框架，组件全可插拔</p>
+        <ul class="caps"><li>可插拔pipeline</li><li>WebRTC/WS/本地音频</li><li>打断</li><li>实时模型接入</li></ul>
+        
+        <div class="badges">
+          <span class="badge ok">代码 BSD-2-Clause · 可商用</span>
+          
+        </div>
+        <div class="card-foot">
+          <a href="https://github.com/pipecat-ai/pipecat" target="_blank" rel="noopener noreferrer">pipecat-ai/pipecat</a>
+          <span class="date">核实 2026-10</span>
+        </div>
+      </article>
+      <article class="card" data-lic="ok" data-search="vocode 传统语音应用快速组装（电话/呼叫中心） 电话接入 模块化stt/llm/tts 本地音频 近期活跃度需复核 mit py">
+        <div class="card-head">
+          <h3 class="card-name">Vocode</h3>
+          <span class="form">框架</span>
+        </div>
+        <p class="card-desc">传统语音应用快速组装（电话/呼叫中心）</p>
+        <ul class="caps"><li>电话接入</li><li>模块化STT/LLM/TTS</li><li>本地音频</li></ul>
+        <p class="note"><span aria-hidden="true">⚠</span> 近期活跃度需复核</p>
+        <div class="badges">
+          <span class="badge ok">代码 MIT · 可商用</span>
+          
+        </div>
+        <div class="card-foot">
+          <a href="https://github.com/vocodedev/vocode-core" target="_blank" rel="noopener noreferrer">vocodedev/vocode-core</a>
+          <span class="date">核实 2026-10</span>
+        </div>
+      </article>
+      <article class="card" data-lic="unknown" data-search="bolna 配置驱动的电话 agent（外呼/客服） twilio/plivo json流程配置 外呼  unknown py">
+        <div class="card-head">
+          <h3 class="card-name">Bolna</h3>
+          <span class="form">框架</span>
+        </div>
+        <p class="card-desc">配置驱动的电话 Agent（外呼/客服）</p>
+        <ul class="caps"><li>Twilio/Plivo</li><li>JSON流程配置</li><li>外呼</li></ul>
+        
+        <div class="badges">
+          <span class="badge unknown">代码 unknown · 许可待确认</span>
+          
+        </div>
+        <div class="card-foot">
+          <a href="https://github.com/bolna-ai/bolna" target="_blank" rel="noopener noreferrer">bolna-ai/bolna</a>
+          <span class="date">核实 2026-10</span>
+        </div>
+      </article>
+      <article class="card" data-lic="ok" data-search="ten framework 低延迟实时多模态 agent 运行时，跨端友好 低延迟 实时多模态 跨端  apache-2.0 cpp go py">
+        <div class="card-head">
+          <h3 class="card-name">TEN Framework</h3>
+          <span class="form">框架</span>
+        </div>
+        <p class="card-desc">低延迟实时多模态 Agent 运行时，跨端友好</p>
+        <ul class="caps"><li>低延迟</li><li>实时多模态</li><li>跨端</li></ul>
+        
+        <div class="badges">
+          <span class="badge ok">代码 Apache-2.0 · 可商用</span>
+          
+        </div>
+        <div class="card-foot">
+          <a href="https://github.com/TEN-framework/ten-framework" target="_blank" rel="noopener noreferrer">TEN-framework/ten-framework</a>
+          <span class="date">核实 2026-10</span>
+        </div>
+      </article>
+      </div>
+    </section>
+
+    <section class="cat" id="cat-diarization" data-cat="diarization">
+      <header class="cat-head">
+        <div class="cat-title">
+          <span class="cat-idx">05</span>
+          <h2>说话人分离与声纹</h2>
+          <span class="cat-num">4 个项目</span>
+        </div>
+        <p class="cat-desc">谁在什么时候说话。会议转写里最伤体验的不是错字，是张冠李戴。</p>
+        <a class="cat-doc" href="https://github.com/xiaopengs/voice-oss-radar/blob/main/docs/05-diarization.md" target="_blank" rel="noopener noreferrer">分类详述 →</a>
+      </header>
+      <div class="grid">
+      <article class="card" data-lic="ok" data-search="pyannote.audio 说话人分离精度标杆，权重需 hf 授权 说话人分离 说话人嵌入 重叠语音检测 需接受用户协议 + hf token；商用条款逐个模型确认 mit multi">
+        <div class="card-head">
+          <h3 class="card-name">pyannote.audio</h3>
+          <span class="form">工具包</span>
+        </div>
+        <p class="card-desc">说话人分离精度标杆，权重需 HF 授权</p>
+        <ul class="caps"><li>说话人分离</li><li>说话人嵌入</li><li>重叠语音检测</li></ul>
+        <p class="note"><span aria-hidden="true">⚠</span> 需接受用户协议 + HF token；商用条款逐个模型确认</p>
+        <div class="badges">
+          <span class="badge ok">代码 MIT · 可商用</span>
+          <span class="badge caution">权重 gated · 需逐项确认</span>
+        </div>
+        <div class="card-foot">
+          <a href="https://github.com/pyannote/pyannote-audio" target="_blank" rel="noopener noreferrer">pyannote/pyannote-audio</a>
+          <span class="date">核实 2026-10</span>
+        </div>
+      </article>
+      <article class="card" data-lic="ok" data-search="3d-speaker 阿里一站式说话人工具包，中文/方言友好 声纹验证 说话人识别 分离 cam++嵌入  apache-2.0 zh multi">
+        <div class="card-head">
+          <h3 class="card-name">3D-Speaker</h3>
+          <span class="form">工具包</span>
+        </div>
+        <p class="card-desc">阿里一站式说话人工具包，中文/方言友好</p>
+        <ul class="caps"><li>声纹验证</li><li>说话人识别</li><li>分离</li><li>CAM++嵌入</li></ul>
+        
+        <div class="badges">
+          <span class="badge ok">代码 Apache-2.0 · 可商用</span>
+          
+        </div>
+        <div class="card-foot">
+          <a href="https://github.com/modelscope/3D-Speaker" target="_blank" rel="noopener noreferrer">modelscope/3D-Speaker</a>
+          <span class="date">核实 2026-10</span>
+        </div>
+      </article>
+      <article class="card" data-lic="ok" data-search="diarizen 端到端说话人分离，重叠语音处理强 端到端分离 重叠语音  mit multi">
+        <div class="card-head">
+          <h3 class="card-name">DiariZen</h3>
+          <span class="form">模型</span>
+        </div>
+        <p class="card-desc">端到端说话人分离，重叠语音处理强</p>
+        <ul class="caps"><li>端到端分离</li><li>重叠语音</li></ul>
+        
+        <div class="badges">
+          <span class="badge ok">代码 MIT · 可商用</span>
+          
+        </div>
+        <div class="card-foot">
+          <a href="https://github.com/BUTSpeechFIT/DiariZen" target="_blank" rel="noopener noreferrer">BUTSpeechFIT/DiariZen</a>
+          <span class="date">核实 2026-10</span>
+        </div>
+      </article>
+      <article class="card" data-lic="ok" data-search="wespeaker 声纹嵌入训练与评测工具链 声纹嵌入 训练/评测 说话人验证  apache-2.0 multi">
+        <div class="card-head">
+          <h3 class="card-name">WeSpeaker</h3>
+          <span class="form">工具包</span>
+        </div>
+        <p class="card-desc">声纹嵌入训练与评测工具链</p>
+        <ul class="caps"><li>声纹嵌入</li><li>训练/评测</li><li>说话人验证</li></ul>
+        
+        <div class="badges">
+          <span class="badge ok">代码 Apache-2.0 · 可商用</span>
+          
+        </div>
+        <div class="card-foot">
+          <a href="https://github.com/wenet-e2e/wespeaker" target="_blank" rel="noopener noreferrer">wenet-e2e/wespeaker</a>
+          <span class="date">核实 2026-10</span>
+        </div>
+      </article>
+      </div>
+    </section>
+
+    <section class="cat" id="cat-on-device" data-cat="on-device">
+      <header class="cat-head">
+        <div class="cat-title">
+          <span class="cat-idx">06</span>
+          <h2>端侧与推理运行时</h2>
+          <span class="cat-num">7 个项目</span>
+        </div>
+        <p class="cat-desc">看包体积、内存峰值、首字延迟，而不是榜单。</p>
+        <a class="cat-doc" href="https://github.com/xiaopengs/voice-oss-radar/blob/main/docs/06-on-device.md" target="_blank" rel="noopener noreferrer">分类详述 →</a>
+      </header>
+      <div class="grid">
+      <article class="card" data-lic="ok" data-search="whisper.cpp whisper 的 c/c++ 重实现，gguf 量化，无 python 依赖 端侧asr metal cuda vulkan coreml 伪流式  mit 99 languages">
+        <div class="card-head">
+          <h3 class="card-name">whisper.cpp</h3>
+          <span class="form">运行时</span>
+        </div>
+        <p class="card-desc">Whisper 的 C/C++ 重实现，GGUF 量化，无 Python 依赖</p>
+        <ul class="caps"><li>端侧ASR</li><li>Metal</li><li>CUDA</li><li>Vulkan</li><li>CoreML</li><li>伪流式</li></ul>
+        
+        <div class="badges">
+          <span class="badge ok">代码 MIT · 可商用</span>
+          
+        </div>
+        <div class="card-foot">
+          <a href="https://github.com/ggml-org/whisper.cpp" target="_blank" rel="noopener noreferrer">ggml-org/whisper.cpp</a>
+          <span class="date">核实 2026-10</span>
+        </div>
+      </article>
+      <article class="card" data-lic="ok" data-search="moonshine 面向短音频的端侧 asr，比 whisper 快很多 端侧asr onnx 低延迟  mit en multi">
+        <div class="card-head">
+          <h3 class="card-name">Moonshine</h3>
+          <span class="form">模型</span>
+        </div>
+        <p class="card-desc">面向短音频的端侧 ASR，比 Whisper 快很多</p>
+        <ul class="caps"><li>端侧ASR</li><li>ONNX</li><li>低延迟</li></ul>
+        
+        <div class="badges">
+          <span class="badge ok">代码 MIT · 可商用</span>
+          
+        </div>
+        <div class="card-foot">
+          <a href="https://github.com/usefulsensors/moonshine" target="_blank" rel="noopener noreferrer">usefulsensors/moonshine</a>
+          <span class="date">核实 2026-10</span>
+        </div>
+      </article>
+      <article class="card" data-lic="ok" data-search="vosk 轻量离线 asr，绑定最全，精度落后于新一代模型 离线asr 多平台绑定 小模型  apache-2.0 20+ languages">
+        <div class="card-head">
+          <h3 class="card-name">Vosk</h3>
+          <span class="form">工具包</span>
+        </div>
+        <p class="card-desc">轻量离线 ASR，绑定最全，精度落后于新一代模型</p>
+        <ul class="caps"><li>离线ASR</li><li>多平台绑定</li><li>小模型</li></ul>
+        
+        <div class="badges">
+          <span class="badge ok">代码 Apache-2.0 · 可商用</span>
+          
+        </div>
+        <div class="card-foot">
+          <a href="https://github.com/alphacep/vosk-api" target="_blank" rel="noopener noreferrer">alphacep/vosk-api</a>
+          <span class="date">核实 2026-10</span>
+        </div>
+      </article>
+      <article class="card" data-lic="ok" data-search="sherpa-onnx 端侧语音全家桶：asr/tts/vad/分离/声纹/音频事件 离线asr 离线tts vad 说话人分离 声纹管理 跨平台绑定 v2.0.0 (2026-10-23)；v1.13.6 补 flutter vad+asr 示例 apache-2.0 cpp py csharp java kotlin swift go dart rust wasm">
+        <div class="card-head">
+          <h3 class="card-name">sherpa-onnx</h3>
+          <span class="form">运行时</span>
+        </div>
+        <p class="card-desc">端侧语音全家桶：ASR/TTS/VAD/分离/声纹/音频事件</p>
+        <ul class="caps"><li>离线ASR</li><li>离线TTS</li><li>VAD</li><li>说话人分离</li><li>声纹管理</li><li>跨平台绑定</li></ul>
+        <p class="note"><span aria-hidden="true">⚠</span> v2.0.0 (2026-10-23)；v1.13.6 补 Flutter VAD+ASR 示例</p>
+        <div class="badges">
+          <span class="badge ok">代码 Apache-2.0 · 可商用</span>
+          
+        </div>
+        <div class="card-foot">
+          <a href="https://github.com/k2-fsa/sherpa-onnx" target="_blank" rel="noopener noreferrer">k2-fsa/sherpa-onnx</a>
+          <span class="date">核实 2026-10</span>
+        </div>
+      </article>
+      <article class="card" data-lic="ok" data-search="ctranslate2 高效 transformer 推理引擎（faster-whisper 底座） int8量化 cpu/gpu推理 批处理  mit cpp py">
+        <div class="card-head">
+          <h3 class="card-name">CTranslate2</h3>
+          <span class="form">运行时</span>
+        </div>
+        <p class="card-desc">高效 Transformer 推理引擎（faster-whisper 底座）</p>
+        <ul class="caps"><li>int8量化</li><li>CPU/GPU推理</li><li>批处理</li></ul>
+        
+        <div class="badges">
+          <span class="badge ok">代码 MIT · 可商用</span>
+          
+        </div>
+        <div class="card-foot">
+          <a href="https://github.com/OpenNMT/CTranslate2" target="_blank" rel="noopener noreferrer">OpenNMT/CTranslate2</a>
+          <span class="date">核实 2026-10</span>
+        </div>
+      </article>
+      <article class="card" data-lic="ok" data-search="onnx runtime 通用推理后端，端侧语音方案的事实地基 跨平台推理 量化 多执行提供器  mit cpp py csharp java">
+        <div class="card-head">
+          <h3 class="card-name">ONNX Runtime</h3>
+          <span class="form">运行时</span>
+        </div>
+        <p class="card-desc">通用推理后端，端侧语音方案的事实地基</p>
+        <ul class="caps"><li>跨平台推理</li><li>量化</li><li>多执行提供器</li></ul>
+        
+        <div class="badges">
+          <span class="badge ok">代码 MIT · 可商用</span>
+          
+        </div>
+        <div class="card-foot">
+          <a href="https://github.com/microsoft/onnxruntime" target="_blank" rel="noopener noreferrer">microsoft/onnxruntime</a>
+          <span class="date">核实 2026-10</span>
+        </div>
+      </article>
+      <article class="card" data-lic="ok" data-search="llama.cpp gguf 推理引擎，经 mmproj 支持语音 llm gguf量化 语音llm cpu推理 音频支持随模型而异，量化后精度损失明显 mit cpp">
+        <div class="card-head">
+          <h3 class="card-name">llama.cpp</h3>
+          <span class="form">运行时</span>
+        </div>
+        <p class="card-desc">GGUF 推理引擎，经 mmproj 支持语音 LLM</p>
+        <ul class="caps"><li>GGUF量化</li><li>语音LLM</li><li>CPU推理</li></ul>
+        <p class="note"><span aria-hidden="true">⚠</span> 音频支持随模型而异，量化后精度损失明显</p>
+        <div class="badges">
+          <span class="badge ok">代码 MIT · 可商用</span>
+          
+        </div>
+        <div class="card-foot">
+          <a href="https://github.com/ggml-org/llama.cpp" target="_blank" rel="noopener noreferrer">ggml-org/llama.cpp</a>
+          <span class="date">核实 2026-10</span>
+        </div>
+      </article>
+      </div>
+    </section>
+
+    <section class="cat" id="cat-audio-frontend" data-cat="audio-frontend">
+      <header class="cat-head">
+        <div class="cat-title">
+          <span class="cat-idx">07</span>
+          <h2>音频前端</h2>
+          <span class="cat-num">8 个项目</span>
+        </div>
+        <p class="cat-desc">VAD、降噪、AEC、音源分离。上游差 3dB，下游全白费。</p>
+        <a class="cat-doc" href="https://github.com/xiaopengs/voice-oss-radar/blob/main/docs/07-audio-frontend.md" target="_blank" rel="noopener noreferrer">分类详述 →</a>
+      </header>
+      <div class="grid">
+      <article class="card" data-lic="ok" data-search="silero vad 最广泛使用的开源 vad，模型约 1–2mb 语音活动检测 onnx 30ms帧 参数可调 对音乐/键盘/呼吸声会误判；8khz 需重采样 mit any">
+        <div class="card-head">
+          <h3 class="card-name">Silero VAD</h3>
+          <span class="form">模型</span>
+        </div>
+        <p class="card-desc">最广泛使用的开源 VAD，模型约 1–2MB</p>
+        <ul class="caps"><li>语音活动检测</li><li>ONNX</li><li>30ms帧</li><li>参数可调</li></ul>
+        <p class="note"><span aria-hidden="true">⚠</span> 对音乐/键盘/呼吸声会误判；8kHz 需重采样</p>
+        <div class="badges">
+          <span class="badge ok">代码 MIT · 可商用</span>
+          
+        </div>
+        <div class="card-foot">
+          <a href="https://github.com/snakers4/silero-vad" target="_blank" rel="noopener noreferrer">snakers4/silero-vad</a>
+          <span class="date">核实 2026-10</span>
+        </div>
+      </article>
+      <article class="card" data-lic="ok" data-search="ten vad 轻量端侧 vad 语音活动检测 端侧 低开销  apache-2.0 any">
+        <div class="card-head">
+          <h3 class="card-name">TEN VAD</h3>
+          <span class="form">模型</span>
+        </div>
+        <p class="card-desc">轻量端侧 VAD</p>
+        <ul class="caps"><li>语音活动检测</li><li>端侧</li><li>低开销</li></ul>
+        
+        <div class="badges">
+          <span class="badge ok">代码 Apache-2.0 · 可商用</span>
+          
+        </div>
+        <div class="card-foot">
+          <a href="https://github.com/TEN-framework/ten-vad" target="_blank" rel="noopener noreferrer">TEN-framework/ten-vad</a>
+          <span class="date">核实 2026-10</span>
+        </div>
+      </article>
+      <article class="card" data-lic="ok" data-search="webrtc vad (py-webrtcvad) 极轻 vad，速度快但误判多 语音活动检测 极低开销  mit any">
+        <div class="card-head">
+          <h3 class="card-name">WebRTC VAD (py-webrtcvad)</h3>
+          <span class="form">库</span>
+        </div>
+        <p class="card-desc">极轻 VAD，速度快但误判多</p>
+        <ul class="caps"><li>语音活动检测</li><li>极低开销</li></ul>
+        
+        <div class="badges">
+          <span class="badge ok">代码 MIT · 可商用</span>
+          
+        </div>
+        <div class="card-foot">
+          <a href="https://github.com/wiseman/py-webrtcvad" target="_blank" rel="noopener noreferrer">wiseman/py-webrtcvad</a>
+          <span class="date">核实 2026-10</span>
+        </div>
+      </article>
+      <article class="card" data-lic="ok" data-search="deepfilternet 48khz 实时语音降噪与去混响 实时降噪 去混响 rust/python  mit any">
+        <div class="card-head">
+          <h3 class="card-name">DeepFilterNet</h3>
+          <span class="form">模型</span>
+        </div>
+        <p class="card-desc">48kHz 实时语音降噪与去混响</p>
+        <ul class="caps"><li>实时降噪</li><li>去混响</li><li>Rust/Python</li></ul>
+        
+        <div class="badges">
+          <span class="badge ok">代码 MIT · 可商用</span>
+          
+        </div>
+        <div class="card-foot">
+          <a href="https://github.com/Rikorose/DeepFilterNet" target="_blank" rel="noopener noreferrer">Rikorose/DeepFilterNet</a>
+          <span class="date">核实 2026-10</span>
+        </div>
+      </article>
+      <article class="card" data-lic="ok" data-search="rnnoise 超轻降噪，c 实现 降噪 极低开销  bsd-3-clause any">
+        <div class="card-head">
+          <h3 class="card-name">RNNoise</h3>
+          <span class="form">库</span>
+        </div>
+        <p class="card-desc">超轻降噪，C 实现</p>
+        <ul class="caps"><li>降噪</li><li>极低开销</li></ul>
+        
+        <div class="badges">
+          <span class="badge ok">代码 BSD-3-Clause · 可商用</span>
+          
+        </div>
+        <div class="card-foot">
+          <a href="https://github.com/xiph/rnnoise" target="_blank" rel="noopener noreferrer">xiph/rnnoise</a>
+          <span class="date">核实 2026-10</span>
+        </div>
+      </article>
+      <article class="card" data-lic="ok" data-search="clearervoice-studio 语音增强/分离/超分/去混响一站式工具箱 语音增强 语音分离 超分 目标说话人提取 去混响  apache-2.0 any">
+        <div class="card-head">
+          <h3 class="card-name">ClearerVoice-Studio</h3>
+          <span class="form">工具包</span>
+        </div>
+        <p class="card-desc">语音增强/分离/超分/去混响一站式工具箱</p>
+        <ul class="caps"><li>语音增强</li><li>语音分离</li><li>超分</li><li>目标说话人提取</li><li>去混响</li></ul>
+        
+        <div class="badges">
+          <span class="badge ok">代码 Apache-2.0 · 可商用</span>
+          
+        </div>
+        <div class="card-foot">
+          <a href="https://github.com/modelscope/ClearerVoice-Studio" target="_blank" rel="noopener noreferrer">modelscope/ClearerVoice-Studio</a>
+          <span class="date">核实 2026-10</span>
+        </div>
+      </article>
+      <article class="card" data-lic="ok" data-search="demucs 音乐音源分离事实标准（不适合会议人声分离） 音乐分离 htdemucs  mit any">
+        <div class="card-head">
+          <h3 class="card-name">Demucs</h3>
+          <span class="form">模型</span>
+        </div>
+        <p class="card-desc">音乐音源分离事实标准（不适合会议人声分离）</p>
+        <ul class="caps"><li>音乐分离</li><li>htdemucs</li></ul>
+        
+        <div class="badges">
+          <span class="badge ok">代码 MIT · 可商用</span>
+          
+        </div>
+        <div class="card-foot">
+          <a href="https://github.com/facebookresearch/demucs" target="_blank" rel="noopener noreferrer">facebookresearch/demucs</a>
+          <span class="date">核实 2026-10</span>
+        </div>
+      </article>
+      <article class="card" data-lic="ok" data-search="speexdsp 回声消除与预处理，成熟稳定 aec 重采样 预处理  bsd-3-clause any">
+        <div class="card-head">
+          <h3 class="card-name">SpeexDSP</h3>
+          <span class="form">库</span>
+        </div>
+        <p class="card-desc">回声消除与预处理，成熟稳定</p>
+        <ul class="caps"><li>AEC</li><li>重采样</li><li>预处理</li></ul>
+        
+        <div class="badges">
+          <span class="badge ok">代码 BSD-3-Clause · 可商用</span>
+          
+        </div>
+        <div class="card-foot">
+          <a href="https://github.com/xiph/speexdsp" target="_blank" rel="noopener noreferrer">xiph/speexdsp</a>
+          <span class="date">核实 2026-10</span>
+        </div>
+      </article>
+      </div>
+    </section>
+
+    <section class="cat" id="cat-voice-conversion" data-cat="voice-conversion">
+      <header class="cat-head">
+        <div class="cat-title">
+          <span class="cat-idx">08</span>
+          <h2>变声与语音编辑</h2>
+          <span class="cat-num">5 个项目</span>
+        </div>
+        <p class="cat-desc">保留内容与韵律，只换音色。比让 TTS 重念一遍自然得多。</p>
+        <a class="cat-doc" href="https://github.com/xiaopengs/voice-oss-radar/blob/main/docs/08-voice-conversion.md" target="_blank" rel="noopener noreferrer">分类详述 →</a>
+      </header>
+      <div class="grid">
+      <article class="card" data-lic="ok" data-search="rvc 10 分钟数据微调，相似度最高的变声方案 实时变声 特征检索 webui rvc-python 每个音色需训练；明确禁止未授权模仿 mit any">
+        <div class="card-head">
+          <h3 class="card-name">RVC</h3>
+          <span class="form">工具包</span>
+        </div>
+        <p class="card-desc">10 分钟数据微调，相似度最高的变声方案</p>
+        <ul class="caps"><li>实时变声</li><li>特征检索</li><li>WebUI</li><li>rvc-python</li></ul>
+        <p class="note"><span aria-hidden="true">⚠</span> 每个音色需训练；明确禁止未授权模仿</p>
+        <div class="badges">
+          <span class="badge ok">代码 MIT · 可商用</span>
+          
+        </div>
+        <div class="card-foot">
+          <a href="https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI" target="_blank" rel="noopener noreferrer">RVC-Project/Retrieval-based-Voice-Conversion-WebUI</a>
+          <span class="date">核实 2026-10</span>
+        </div>
+      </article>
+      <article class="card" data-lic="unknown" data-search="seed-vc 1–30 秒参考音频的零样本变声，支持实时与歌声 零样本变声 实时 歌声转换  unknown any">
+        <div class="card-head">
+          <h3 class="card-name">Seed-VC</h3>
+          <span class="form">模型</span>
+        </div>
+        <p class="card-desc">1–30 秒参考音频的零样本变声，支持实时与歌声</p>
+        <ul class="caps"><li>零样本变声</li><li>实时</li><li>歌声转换</li></ul>
+        
+        <div class="badges">
+          <span class="badge unknown">代码 unknown · 许可待确认</span>
+          
+        </div>
+        <div class="card-foot">
+          <a href="https://github.com/Plachtaa/seed-vc" target="_blank" rel="noopener noreferrer">Plachtaa/seed-vc</a>
+          <span class="date">核实 2026-10</span>
+        </div>
+      </article>
+      <article class="card" data-lic="caution" data-search="so-vits-svc 经典歌声转换方案，agpl 对商用不友好 歌声转换 微调 agpl-3.0：网络服务使用也触发开源义务 agpl-3.0 any">
+        <div class="card-head">
+          <h3 class="card-name">so-vits-svc</h3>
+          <span class="form">工具包</span>
+        </div>
+        <p class="card-desc">经典歌声转换方案，AGPL 对商用不友好</p>
+        <ul class="caps"><li>歌声转换</li><li>微调</li></ul>
+        <p class="note"><span aria-hidden="true">⚠</span> AGPL-3.0：网络服务使用也触发开源义务</p>
+        <div class="badges">
+          <span class="badge caution">代码 AGPL-3.0 · 传染性开源</span>
+          
+        </div>
+        <div class="card-foot">
+          <a href="https://github.com/svc-develop-team/so-vits-svc" target="_blank" rel="noopener noreferrer">svc-develop-team/so-vits-svc</a>
+          <span class="date">核实 2026-10</span>
+        </div>
+      </article>
+      <article class="card" data-lic="ok" data-search="knn-vc wavlm 特征 + knn 检索，无需训练的 baseline 零样本变声 简单可复现  mit any">
+        <div class="card-head">
+          <h3 class="card-name">kNN-VC</h3>
+          <span class="form">模型</span>
+        </div>
+        <p class="card-desc">WavLM 特征 + kNN 检索，无需训练的 baseline</p>
+        <ul class="caps"><li>零样本变声</li><li>简单可复现</li></ul>
+        
+        <div class="badges">
+          <span class="badge ok">代码 MIT · 可商用</span>
+          
+        </div>
+        <div class="card-foot">
+          <a href="https://github.com/bshall/kNN-VC" target="_blank" rel="noopener noreferrer">bshall/kNN-VC</a>
+          <span class="date">核实 2026-10</span>
+        </div>
+      </article>
+      <article class="card" data-lic="unknown" data-search="step-audio-editx 3b 语音编辑模型，可改情感与副语言而非只换音色 情感编辑 风格编辑 副语言插入  unknown zh en">
+        <div class="card-head">
+          <h3 class="card-name">Step-Audio-EditX</h3>
+          <span class="form">模型</span>
+        </div>
+        <p class="card-desc">3B 语音编辑模型，可改情感与副语言而非只换音色</p>
+        <ul class="caps"><li>情感编辑</li><li>风格编辑</li><li>副语言插入</li></ul>
+        
+        <div class="badges">
+          <span class="badge unknown">代码 unknown · 许可待确认</span>
+          
+        </div>
+        <div class="card-foot">
+          <a href="https://github.com/stepfun-ai/Step-Audio-EditX" target="_blank" rel="noopener noreferrer">stepfun-ai/Step-Audio-EditX</a>
+          <span class="date">核实 2026-10</span>
+        </div>
+      </article>
+      </div>
+    </section>
+
+    <section class="cat" id="cat-speech-translation" data-cat="speech-translation">
+      <header class="cat-head">
+        <div class="cat-title">
+          <span class="cat-idx">09</span>
+          <h2>语音翻译与同传</h2>
+          <span class="cat-num">3 个项目</span>
+        </div>
+        <p class="cat-desc">级联、端到端、流式三条路线，延迟与质量成反比。</p>
+        <a class="cat-doc" href="https://github.com/xiaopengs/voice-oss-radar/blob/main/docs/09-speech-translation.md" target="_blank" rel="noopener noreferrer">分类详述 →</a>
+      </header>
+      <div class="grid">
+      <article class="card" data-lic="caution" data-search="hibiki / hibiki-zero 流式语音到语音同传，输出目标语音 + 文本并保留原音色 实时s2st 音色保留 无需对齐数据训练  cc-by-4.0 4 languages">
+        <div class="card-head">
+          <h3 class="card-name">Hibiki / Hibiki-Zero</h3>
+          <span class="form">模型</span>
+        </div>
+        <p class="card-desc">流式语音到语音同传，输出目标语音 + 文本并保留原音色</p>
+        <ul class="caps"><li>实时S2ST</li><li>音色保留</li><li>无需对齐数据训练</li></ul>
+        
+        <div class="badges">
+          <span class="badge caution">代码 CC-BY-4.0 · 需逐项确认</span>
+          
+        </div>
+        <div class="card-foot">
+          <a href="https://github.com/kyutai-labs/hibiki" target="_blank" rel="noopener noreferrer">kyutai-labs/hibiki</a>
+          <span class="date">核实 2026-10</span>
+        </div>
+      </article>
+      <article class="card" data-lic="warn" data-search="seamlessm4t / seamlessstreaming 覆盖最广的统一语音翻译模型族，含流式同传 s2st s2tt t2st asr 流式同传 ⚠️ 禁止商用；中文方向弱于专门模型 cc-by-nc-4.0 100 languages">
+        <div class="card-head">
+          <h3 class="card-name">SeamlessM4T / SeamlessStreaming</h3>
+          <span class="form">模型</span>
+        </div>
+        <p class="card-desc">覆盖最广的统一语音翻译模型族，含流式同传</p>
+        <ul class="caps"><li>S2ST</li><li>S2TT</li><li>T2ST</li><li>ASR</li><li>流式同传</li></ul>
+        <p class="note"><span aria-hidden="true">⚠</span> 禁止商用；中文方向弱于专门模型</p>
+        <div class="badges">
+          <span class="badge warn">代码 CC-BY-NC-4.0 · 禁止商用</span>
+          
+        </div>
+        <div class="card-foot">
+          <a href="https://github.com/facebookresearch/seamless_communication" target="_blank" rel="noopener noreferrer">facebookresearch/seamless_communication</a>
+          <span class="date">核实 2026-10</span>
+        </div>
+      </article>
+      <article class="card" data-lic="warn" data-search="nllb 级联方案中的文本翻译层 多语文本翻译  cc-by-nc-4.0 200 languages">
+        <div class="card-head">
+          <h3 class="card-name">NLLB</h3>
+          <span class="form">模型</span>
+        </div>
+        <p class="card-desc">级联方案中的文本翻译层</p>
+        <ul class="caps"><li>多语文本翻译</li></ul>
+        
+        <div class="badges">
+          <span class="badge warn">代码 CC-BY-NC-4.0 · 禁止商用</span>
+          
+        </div>
+        <div class="card-foot">
+          <a href="https://github.com/facebookresearch/fairseq/tree/nllb" target="_blank" rel="noopener noreferrer">facebookresearch/fairseq/tree/nllb</a>
+          <span class="date">核实 2026-10</span>
+        </div>
+      </article>
+      </div>
+    </section>
+
+    <section class="cat" id="cat-meeting-app" data-cat="meeting-app">
+      <header class="cat-head">
+        <div class="cat-title">
+          <span class="cat-idx">10</span>
+          <h2>会议转写桌面应用</h2>
+          <span class="cat-num">9 个项目</span>
+        </div>
+        <p class="cat-desc">音频不出本机、双轨采集、结构化纪要。Tauri/Rust 与 Electron/Qt 两个流派。</p>
+        <a class="cat-doc" href="https://github.com/xiaopengs/voice-oss-radar/blob/main/docs/10-meeting-desktop.md" target="_blank" rel="noopener noreferrer">分类详述 →</a>
+      </header>
+      <div class="grid">
+      <article class="card" data-lic="unknown" data-search="meetily 赛道体量最大的本地会议转写应用（约 19k stars，305k+ 下载） 实时转写 说话人分离 摘要 系统音频采集 gpu加速 中文实测约 18.7%；完整说话人分离在 pro 付费档 unknown en multi">
+        <div class="card-head">
+          <h3 class="card-name">Meetily</h3>
+          <span class="form">桌面应用</span>
+        </div>
+        <p class="card-desc">赛道体量最大的本地会议转写应用（约 19K stars，305K+ 下载）</p>
+        <ul class="caps"><li>实时转写</li><li>说话人分离</li><li>摘要</li><li>系统音频采集</li><li>GPU加速</li></ul>
+        <p class="note"><span aria-hidden="true">⚠</span> 中文实测约 18.7%；完整说话人分离在 Pro 付费档</p>
+        <div class="badges">
+          <span class="badge unknown">代码 unknown · 许可待确认</span>
+          
+        </div>
+        <div class="card-foot">
+          <a href="https://github.com/zackriya-solutions/meetily" target="_blank" rel="noopener noreferrer">zackriya-solutions/meetily</a>
+          <span class="date">核实 2026-10</span>
+        </div>
+      </article>
+      <article class="card" data-lic="unknown" data-search="liberty 中文会议产品化标杆，tauri 壳 + funasr 内核 funasr中文转写 方言 说话人分离(失败不编造) docx纪要导出 windows 为主；托管 python 运行时较重 unknown zh en">
+        <div class="card-head">
+          <h3 class="card-name">Liberty</h3>
+          <span class="form">桌面应用</span>
+        </div>
+        <p class="card-desc">中文会议产品化标杆，Tauri 壳 + FunASR 内核</p>
+        <ul class="caps"><li>FunASR中文转写</li><li>方言</li><li>说话人分离(失败不编造)</li><li>DOCX纪要导出</li></ul>
+        <p class="note"><span aria-hidden="true">⚠</span> Windows 为主；托管 Python 运行时较重</p>
+        <div class="badges">
+          <span class="badge unknown">代码 unknown · 许可待确认</span>
+          
+        </div>
+        <div class="card-foot">
+          <a href="https://github.com/whalesky-labs/Liberty" target="_blank" rel="noopener noreferrer">whalesky-labs/Liberty</a>
+          <span class="date">核实 2026-10</span>
+        </div>
+      </article>
+      <article class="card" data-lic="unknown" data-search="言迹 talktrace (meeting-copilot) 在线 partial + 离线 final 双阶段转写架构 funasr 双阶段转写 wasapi双轨采集 证据化建议 社区体量小，需自行验证终稿质量 unknown zh">
+        <div class="card-head">
+          <h3 class="card-name">言迹 Talktrace (meeting-copilot)</h3>
+          <span class="form">桌面应用</span>
+        </div>
+        <p class="card-desc">在线 partial + 离线 final 双阶段转写架构</p>
+        <ul class="caps"><li>FunASR</li><li>双阶段转写</li><li>WASAPI双轨采集</li><li>证据化建议</li></ul>
+        <p class="note"><span aria-hidden="true">⚠</span> 社区体量小，需自行验证终稿质量</p>
+        <div class="badges">
+          <span class="badge unknown">代码 unknown · 许可待确认</span>
+          
+        </div>
+        <div class="card-foot">
+          <a href="https://github.com/luguochang/meeting-copilot" target="_blank" rel="noopener noreferrer">luguochang/meeting-copilot</a>
+          <span class="date">核实 2026-10</span>
+        </div>
+      </article>
+      <article class="card" data-lic="unknown" data-search="conversationaly meetily fork，85 个模型 + 三平台安装包 多模型切换 流式 捆绑gemma4摘要 metal/cuda/vulkan/rocm  unknown multi">
+        <div class="card-head">
+          <h3 class="card-name">Conversationaly</h3>
+          <span class="form">桌面应用</span>
+        </div>
+        <p class="card-desc">Meetily fork，85 个模型 + 三平台安装包</p>
+        <ul class="caps"><li>多模型切换</li><li>流式</li><li>捆绑Gemma4摘要</li><li>Metal/CUDA/Vulkan/ROCm</li></ul>
+        
+        <div class="badges">
+          <span class="badge unknown">代码 unknown · 许可待确认</span>
+          
+        </div>
+        <div class="card-foot">
+          <a href="https://github.com/bykof/conversationaly" target="_blank" rel="noopener noreferrer">bykof/conversationaly</a>
+          <span class="date">核实 2026-10</span>
+        </div>
+      </article>
+      <article class="card" data-lic="unknown" data-search="auricle 约 39mb 单 rust 二进制，api-first 会议转写 rest/ws/sse mcp 本地ocr copilot 双人转写 自动更新  unknown multi">
+        <div class="card-head">
+          <h3 class="card-name">Auricle</h3>
+          <span class="form">桌面应用</span>
+        </div>
+        <p class="card-desc">约 39MB 单 Rust 二进制，API-first 会议转写</p>
+        <ul class="caps"><li>REST/WS/SSE</li><li>MCP</li><li>本地OCR copilot</li><li>双人转写</li><li>自动更新</li></ul>
+        
+        <div class="badges">
+          <span class="badge unknown">代码 unknown · 许可待确认</span>
+          
+        </div>
+        <div class="card-foot">
+          <a href="https://github.com/ManeeshJupalle/Auricle" target="_blank" rel="noopener noreferrer">ManeeshJupalle/Auricle</a>
+          <span class="date">核实 2026-10</span>
+        </div>
+      </article>
+      <article class="card" data-lic="unknown" data-search="meeting-summarizer pyside6 桌面，7 引擎可选 + 极致导出 + mcp 多引擎 sherpa-onnx分离 多格式导出 obsidian/sheets mcp  unknown multi ru">
+        <div class="card-head">
+          <h3 class="card-name">meeting-summarizer</h3>
+          <span class="form">桌面应用</span>
+        </div>
+        <p class="card-desc">PySide6 桌面，7 引擎可选 + 极致导出 + MCP</p>
+        <ul class="caps"><li>多引擎</li><li>sherpa-onnx分离</li><li>多格式导出</li><li>Obsidian/Sheets</li><li>MCP</li></ul>
+        
+        <div class="badges">
+          <span class="badge unknown">代码 unknown · 许可待确认</span>
+          
+        </div>
+        <div class="card-foot">
+          <a href="https://github.com/john7ross/meeting-summarizer" target="_blank" rel="noopener noreferrer">john7ross/meeting-summarizer</a>
+          <span class="date">核实 2026-10</span>
+        </div>
+      </article>
+      <article class="card" data-lic="unknown" data-search="whisper meeting assistant macos 专用，screencapturekit 直采 + 说话人持久化 系统音频采集 pyannote分离 voice profile metal  unknown multi">
+        <div class="card-head">
+          <h3 class="card-name">Whisper Meeting Assistant</h3>
+          <span class="form">桌面应用</span>
+        </div>
+        <p class="card-desc">macOS 专用，ScreenCaptureKit 直采 + 说话人持久化</p>
+        <ul class="caps"><li>系统音频采集</li><li>pyannote分离</li><li>voice profile</li><li>Metal</li></ul>
+        
+        <div class="badges">
+          <span class="badge unknown">代码 unknown · 许可待确认</span>
+          
+        </div>
+        <div class="card-foot">
+          <a href="https://github.com/bishoku/whisper-meeting-assistant" target="_blank" rel="noopener noreferrer">bishoku/whisper-meeting-assistant</a>
+          <span class="date">核实 2026-10</span>
+        </div>
+      </article>
+      <article class="card" data-lic="unknown" data-search="meeting_transcript 极简录音 + cpu int8 faster-whisper，无需 gpu cpu转写 loopback采集  unknown multi">
+        <div class="card-head">
+          <h3 class="card-name">meeting_transcript</h3>
+          <span class="form">桌面应用</span>
+        </div>
+        <p class="card-desc">极简录音 + CPU int8 faster-whisper，无需 GPU</p>
+        <ul class="caps"><li>CPU转写</li><li>loopback采集</li></ul>
+        
+        <div class="badges">
+          <span class="badge unknown">代码 unknown · 许可待确认</span>
+          
+        </div>
+        <div class="card-foot">
+          <a href="https://github.com/yoshi-bbb/meeting_transcript" target="_blank" rel="noopener noreferrer">yoshi-bbb/meeting_transcript</a>
+          <span class="date">核实 2026-10</span>
+        </div>
+      </article>
+      <article class="card" data-lic="ok" data-search="handy 快捷键触发 + vad + 剪贴板粘贴的轻量听写工具 全局快捷键 vad 本地whisper/parakeet 仓库地址待复核（原文标注为推断） mit multi">
+        <div class="card-head">
+          <h3 class="card-name">Handy</h3>
+          <span class="form">桌面应用</span>
+        </div>
+        <p class="card-desc">快捷键触发 + VAD + 剪贴板粘贴的轻量听写工具</p>
+        <ul class="caps"><li>全局快捷键</li><li>VAD</li><li>本地Whisper/Parakeet</li></ul>
+        <p class="note"><span aria-hidden="true">⚠</span> 仓库地址待复核（原文标注为推断）</p>
+        <div class="badges">
+          <span class="badge ok">代码 MIT · 可商用</span>
+          
+        </div>
+        <div class="card-foot">
+          <a href="https://github.com/cjpais/handy" target="_blank" rel="noopener noreferrer">cjpais/handy</a>
+          <span class="date">核实 2026-10</span>
+        </div>
+      </article>
+      </div>
+    </section>
+
+    <section class="cat" id="cat-voice-studio" data-cat="voice-studio">
+      <header class="cat-head">
+        <div class="cat-title">
+          <span class="cat-idx">11</span>
+          <h2>语音创作工作台</h2>
+          <span class="cat-num">2 个项目</span>
+        </div>
+        <p class="cat-desc">克隆、配音、有声书。常被误当成会议工具。</p>
+        <a class="cat-doc" href="https://github.com/xiaopengs/voice-oss-radar/blob/main/docs/10-meeting-desktop.md" target="_blank" rel="noopener noreferrer">分类详述 →</a>
+      </header>
+      <div class="grid">
+      <article class="card" data-lic="caution" data-search="voicestudio 本地 elevenlabs 替代品，16 个 tts 引擎 + 系统级听写 语音克隆 声音设计 视频配音 有声书 实时听写 mcp 非会议转写工具：无会议级 diarization 与系统音频工作流；intel mac 不支持本地后端 agpl-3.0 646 languages">
+        <div class="card-head">
+          <h3 class="card-name">VoiceStudio</h3>
+          <span class="form">桌面应用</span>
+        </div>
+        <p class="card-desc">本地 ElevenLabs 替代品，16 个 TTS 引擎 + 系统级听写</p>
+        <ul class="caps"><li>语音克隆</li><li>声音设计</li><li>视频配音</li><li>有声书</li><li>实时听写</li><li>MCP</li></ul>
+        <p class="note"><span aria-hidden="true">⚠</span> 非会议转写工具：无会议级 diarization 与系统音频工作流；Intel Mac 不支持本地后端</p>
+        <div class="badges">
+          <span class="badge caution">代码 AGPL-3.0 · 传染性开源</span>
+          
+        </div>
+        <div class="card-foot">
+          <a href="https://github.com/debpalash/VoiceStudio" target="_blank" rel="noopener noreferrer">debpalash/VoiceStudio</a>
+          <span class="date">核实 2026-10</span>
+        </div>
+      </article>
+      <article class="card" data-lic="unknown" data-search="voice-studio (mjlzz) 轻量 asr &amp; tts 工具箱 + 桌面悬浮话筒 faster-whisper 实时流式 词级时间戳 多tts后端  unknown zh en ja">
+        <div class="card-head">
+          <h3 class="card-name">voice-studio (mjlzz)</h3>
+          <span class="form">桌面应用</span>
+        </div>
+        <p class="card-desc">轻量 ASR &amp; TTS 工具箱 + 桌面悬浮话筒</p>
+        <ul class="caps"><li>faster-whisper</li><li>实时流式</li><li>词级时间戳</li><li>多TTS后端</li></ul>
+        
+        <div class="badges">
+          <span class="badge unknown">代码 unknown · 许可待确认</span>
+          
+        </div>
+        <div class="card-foot">
+          <a href="https://github.com/mjlzz/voice-studio" target="_blank" rel="noopener noreferrer">mjlzz/voice-studio</a>
+          <span class="date">核实 2026-10</span>
+        </div>
+      </article>
+      </div>
+    </section>
+
+  <div class="empty" id="empty" hidden>
+    <strong>没有匹配的项目</strong>
+    <p>换个关键词，或者把筛选条件放开一点。</p>
+    <button type="button" id="reset">重置全部筛选</button>
+  </div>
+</main>
+
+<footer class="wrap">
+  <div class="foot-inner">
+    <div>
+      <h2>维护规则</h2>
+      <p>每周扫一次新项目与重大版本，每月复核全部条目的活跃度与许可变更。所有条目带核实日期，过期即视为待复核。</p>
+      <p>收录标准：有公开仓库或权重、能说清解决什么问题、仍在维护、许可明确。纯云端 API 与停更超 18 个月的项目不收。</p>
+      <p class="sig">数据源：<a href="https://github.com/xiaopengs/voice-oss-radar/blob/main/data/projects.yaml" target="_blank" rel="noopener noreferrer">data/projects.yaml</a> · 本页由该文件自动生成</p>
+    </div>
+    <div>
+      <h2>三条贯穿全表的结论</h2>
+      <ul>
+        <li>中文语音的默认答案在 FunASR 系，不在 Whisper 系</li>
+        <li>许可证要看权重，不是看代码</li>
+        <li>上游音频（AEC → 降噪 → VAD）决定上限</li>
+      </ul>
+    </div>
+    <div>
+      <h2>仓库</h2>
+      <ul>
+        <li><a href="https://github.com/xiaopengs/voice-oss-radar" target="_blank" rel="noopener noreferrer">github.com/xiaopengs/voice-oss-radar</a></li>
+        <li><a href="https://github.com/xiaopengs/voice-oss-radar/blob/main/README.md" target="_blank" rel="noopener noreferrer">README 与选型速查</a></li>
+        <li><a href="https://github.com/xiaopengs/voice-oss-radar/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener noreferrer">贡献指南</a></li>
+        <li><a href="https://github.com/xiaopengs/voice-oss-radar/blob/main/CHANGELOG.md" target="_blank" rel="noopener noreferrer">变更记录</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  try {
+    var q = document.getElementById('q');
+    var shown = document.getElementById('shown');
+    var empty = document.getElementById('empty');
+    var reset = document.getElementById('reset');
+    var cards = Array.prototype.slice.call(document.querySelectorAll('.card'));
+    var sections = Array.prototype.slice.call(document.querySelectorAll('.cat'));
+    var catChips = Array.prototype.slice.call(document.querySelectorAll('#cat-chips .chip'));
+    var licChips = Array.prototype.slice.call(document.querySelectorAll('#lic-chips .chip'));
+    var state = { cat: 'all', lic: 'all', text: '' };
+
+    function apply() {
+      var n = 0;
+      var perCat = {};
+      cards.forEach(function (c) {
+        var okCat = state.cat === 'all' || c.closest('.cat').getAttribute('data-cat') === state.cat;
+        var okLic = state.lic === 'all' || c.getAttribute('data-lic') === state.lic;
+        var okText = !state.text || (c.getAttribute('data-search') || '').indexOf(state.text) !== -1;
+        var visible = okCat && okLic && okText;
+        c.hidden = !visible;
+        if (visible) {
+          n++;
+          var k = c.closest('.cat').getAttribute('data-cat');
+          perCat[k] = (perCat[k] || 0) + 1;
+        }
+      });
+      sections.forEach(function (s) {
+        var k = s.getAttribute('data-cat');
+        s.hidden = !perCat[k];
+      });
+      shown.textContent = n;
+      empty.hidden = n !== 0;
+    }
+
+    q.addEventListener('input', function () {
+      state.text = q.value.trim().toLowerCase();
+      apply();
+    });
+
+    catChips.forEach(function (b) {
+      b.addEventListener('click', function () {
+        state.cat = b.getAttribute('data-cat');
+        catChips.forEach(function (x) {
+          var on = x === b;
+          x.classList.toggle('is-active', on);
+          x.setAttribute('aria-pressed', on ? 'true' : 'false');
+        });
+        apply();
+      });
+    });
+
+    licChips.forEach(function (b) {
+      b.addEventListener('click', function () {
+        state.lic = b.getAttribute('data-lic');
+        licChips.forEach(function (x) {
+          var on = x === b;
+          x.classList.toggle('is-active', on);
+          x.setAttribute('aria-pressed', on ? 'true' : 'false');
+        });
+        apply();
+      });
+    });
+
+    reset.addEventListener('click', function () {
+      q.value = '';
+      state = { cat: 'all', lic: 'all', text: '' };
+      catChips.forEach(function (x, i) {
+        x.classList.toggle('is-active', i === 0);
+        x.setAttribute('aria-pressed', i === 0 ? 'true' : 'false');
+      });
+      licChips.forEach(function (x, i) {
+        x.classList.toggle('is-active', i === 0);
+        x.setAttribute('aria-pressed', i === 0 ? 'true' : 'false');
+      });
+      apply();
+      q.focus();
+    });
+
+    document.querySelectorAll('a[href^="#"]').forEach(function (a) {
+      a.addEventListener('click', function (e) {
+        var id = a.getAttribute('href').slice(1);
+        var t = document.getElementById(id);
+        if (!t) return;
+        e.preventDefault();
+        if (t.hidden) {
+          q.value = '';
+          state = { cat: 'all', lic: 'all', text: '' };
+          catChips.forEach(function (x, i) {
+            x.classList.toggle('is-active', i === 0);
+            x.setAttribute('aria-pressed', i === 0 ? 'true' : 'false');
+          });
+          licChips.forEach(function (x, i) {
+            x.classList.toggle('is-active', i === 0);
+            x.setAttribute('aria-pressed', i === 0 ? 'true' : 'false');
+          });
+          apply();
+        }
+        t.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+  } catch (err) {
+    /* 脚本失败时静态卡片仍完整可读 */
+  }
+})();
+</script>
+</body>
+</html>
