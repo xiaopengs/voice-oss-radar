@@ -1,0 +1,156 @@
+调研说明
+
+你提到的“voicestudio”在 GitHub 上实际对应两类完全不同的东西：一类是专为会议场景设计的本地转写桌面应用（Meetily、Liberty、Talktrace 等）；另一类是名为 VoiceStudio 的本地语音创作工作台，转写只是其听写/配音链路中的一环，并非会议转写专用工具。下面分别梳理，再在对比表中做能力对照。
+
+数据基于 2026 年 10 月的公开信息；星数、版本迭代较快，引用时建议复核最新仓库状态。
+
+一、会议转写桌面应用（直接对标“语音会议转写”）
+
+1. Meetily
+
+地址：github.com/zackriya-solutions/meetily
+
+技术栈：Tauri 2（Rust 后端）+ Next.js / React 前端；转写引擎以 whisper.cpp 为主，同时支持 Parakeet-tdt-0.6b-v3（ONNX 转换）作为默认模型；摘要通过 Ollama 或 BYO LLM（Claude / Groq / OpenAI 同一接口）。代码约 8.6 万行，Rust 占比约 40%，桌面全栈工程成熟度高。
+
+桌面端情况：原生 Windows / macOS 安装包，Windows 企业桌面覆盖是它的差异化优势。GPU 加速覆盖 Apple Silicon Metal、NVIDIA CUDA、AMD/Intel Vulkan。这是当前该赛道体量最大的项目，截至 2026 年 7 月约 19K stars、305K+ 下载。
+
+转写能力：实时转写延迟约 2–4 秒，官方宣称比原生 Whisper 快 3.6 倍；支持说话人分离，清晰录音下约 90% 准确率，但中文场景表现是明显短板——有实测指出中文准确率仅约 18.7%，专业术语经常识别错误，背景噪音下说话人识别准确率可能从 80% 暴跌到 30% 左右。说话人分离在免费社区版有基础支持，完整能力在 Meetily Pro 付费档。
+
+适合谁：英语为主、Windows 桌面环境、追求最大社区生态和成熟度的用户。中文会议需要谨慎评估。
+
+2. Liberty
+
+地址：github.com/whalesky-labs/Liberty
+
+技术栈：Tauri 2 桌面壳 + React / TypeScript 前端，原生服务用 Rust，本地转写通过托管的 Python 3.10.17 运行时 + FunASR runner 执行。这是一个有趣的“Tauri 壳 + Python 转写内核”混合架构，前端桌面体验偏现代，转写能力则直接继承 FunASR 的中文优势。
+
+桌面端情况：Windows 桌面应用，支持中英文 UI、自动/浅色/深色主题、毛玻璃风格。本地模式使用内置 SQLite，可选远程后端模式。带有一定的游戏化桌面宠物元素（255 级成长、LP 钱包等），产品化程度较高但风格见仁见智。
+
+转写能力：核心是 FunASR，支持中文、中英混合、方言。FunASR 在中文普通话场景实测字准确率可达 95% 以上，标点生成和数字规范化（如“三点二十”→“3:20”）表现较好。支持说话人分离，且设计上区分“ASR 成功但 diarization 失败”的情况，不会强行编造说话人标签，只将经过验证的结果投影到说话人视图。导出格式覆盖 TXT、Markdown、bundled Markdown 和 DOCX 会议纪要。
+
+适合谁：中文会议为主、需要本地转写 + 说话人分离 + 结构化纪要导出、能接受 Tauri + Python 混合运行时的 Windows 用户。
+
+3. 言迹 Talktrace（meeting-copilot）
+
+地址：github.com/luguochang/meeting-copilot
+
+技术栈：Tauri 2 + Rust（原生音频/进程生命周期）+ React / TypeScript（工作台）+ FastAPI（本地服务编排）+ SQLite。转写链路是分层设计：在线阶段用 FunASR Paraformer + ONNX Runtime 产生低延迟 partial 用于实时预览；离线阶段用 SeACo Paraformer + FSMN VAD + CT-Transformer 标点产生权威 final；可选 LLM 仅做文本校正，不承担转写。
+
+桌面端情况：Windows 客户端，WASAPI 采集麦克风和系统音频，16 kHz 单声道 PCM。这是一个明确为中文技术会议设计的项目，文档和界面以中文为主，整体更接近“个人/小团队工作台”而非大规模产品。
+
+转写能力：中文优先，FunASR 中文基础能力有保障；双阶段设计在“低延迟实时反馈”和“离线高准确率终稿”之间做了明确取舍，而不是让单个模型硬扛两个目标。证据化建议、会后复盘和个人笔记是它的附加工作流。目前公开的独立效果评测和社区体量较少，选型时建议以实际中文会议样本做小规模验证。
+
+适合谁：中文技术会议、重视“实时预览 + 离线精修”分层、且需要会后结构化工作流的用户。
+
+4. Conversationaly
+
+地址：github.com/bykof/conversationaly
+
+技术栈：Tauri / Rust 核心 + transcribe.cpp（STT）+ 捆绑的 llama.cpp sidecar。它是 Meetily 的 fork，但转写底座从 whisper.cpp 换成了 transcribe.cpp，内置 Gemma 4 本地 LLM 做摘要，不需要额外安装 Ollama即可完成摘要链路。
+
+桌面端情况：macOS / Windows / Linux 三平台预构建安装包（.dmg / .exe / .deb/.rpm/.AppImage），跨平台覆盖是它的明确优势。
+
+转写能力：模型库非常宽——85 个模型、16 个家族，包括 Whisper、Parakeet、Nemotron、Canary、Voxtral、Qwen3-ASR、SenseVoice、Moonshine、GigaAM 等。默认模型 parakeet-tdt-0.6b-v3-q8 官方标称 1.94% WER，覆盖 25 个欧洲语言 locale；流式场景可用 nemotron-3.5-asr-streaming-0.6b-q8 实现逐词实时文本。GPU 加速覆盖 Metal / CUDA / Vulkan / ROCm。可选云端 STT（Deepgram、ElevenLabs、Groq、OpenAI），但默认完全本地。
+
+适合谁：需要跨平台、愿意在不同模型间按会议语言/场景切换、追求默认模型 WER 指标的用户。中文效果取决于所选模型（Qwen3-ASR / SenseVoice 等中文友好模型的实测需要自行验证）。
+
+5. Auricle
+
+地址：github.com/ManeeshJupalle/Auricle
+
+技术栈：单一 Rust 二进制，约 39 MB，SQLite 存储，不依赖 Tauri / Electron / Node。音频采集（系统 loopback + 麦克风）、STT 后端调度、REST / WebSocket / SSE API、内嵌 Web dashboard 和 always-on-top copilot overlay 全部在一个进程内完成。
+
+桌面端情况：Windows 10/11 x64，提供 MSI 安装包，per-user 安装无需管理员权限。目前安装包未代码签名，首次安装会触发 SmartScreen 警告，但后续自动更新有签名校验。
+
+转写能力：本地 Whisper 后端保证音频不出机器，STT 后端可插拔。支持双说话人实时转写，自动标题、一键摘要、全文搜索、Markdown 导出。特色是 copilot 模式：Ctrl+Shift+A 捕获当前窗口（本地 OCR）+ 最近 10 分钟转录，流式输出答案到覆盖层。API-first 设计使 Claude Code 等 agent 可以通过 MCP server 读取当前会议内容。
+
+适合谁：开发者/技术用户，想要轻量单二进制、API 可编程、且不需要重型桌面 UI 的用户。双说话人场景适用，但多人会议的说话人分离能力未在 README 中强调。
+
+6. meeting-summarizer（john7ross）
+
+地址：github.com/john7ross/meeting-summarizer（desktop 子目录）
+
+技术栈：PySide6（原生 Qt 桌面），原 Electron UI 层重写为 PySide6，Python 后端以 CLI 子进程方式复用。这和 Tauri/Rust 路线形成鲜明对照——更“传统桌面”，对 Python 生态友好，但安装包体积和资源占用可能高于 Tauri 方案。
+
+桌面端情况：Windows 为主（WASAPI loopback 采集系统音频），俄语/英语文档较完善。
+
+转写能力：7 个内置引擎——OpenAI Whisper、Faster-Whisper、WhisperX（带说话人分离）、Vosk、sherpa-onnx、whisper.cpp、FunASR（SenseVoice/Paraformer，英文）。说话人分离默认用 sherpa-onnx（开箱即用，无 token 门槛），可选 pyannote（需 HF token）。导出格式极其丰富：txt / md / json / html / pdf / docx，支持 Obsidian vault、按说话人拆分文件、Google Sheets webhook。还内置 MCP server，可让 Claude Code 等 agent 直接检索会议档案。
+
+适合谁：需要“多引擎对比转写”、丰富导出格式、或希望用 MCP 把会议库接入 agent 工作流的用户。中文能力取决于所选引擎（FunASR 中文较强，但 README 标注 FunASR 在该项目中为英文用途）。
+
+7. 其他值得关注的轻量/专用选项
+
+项目 地址 关键特征
+Whisper Meeting Assistant github.com/bishoku/whisper-meeting-assistant macOS 专用，Tauri v2 + whisper.cpp + Pyannote + Silero VAD，ScreenCaptureKit 直采系统音频，Metal 加速，说话人持久化 voice profile
+meeting_transcript github.com/yoshi-bbb/meeting_transcript 极简本地桌面录音 + CPU faster-whisper，CPU int8 即可运行，无需 GPU；Windows/Linux loopback，macOS 需 BlackHole
+Handy github.com/cjpais/handy（推断） Tauri + Rust，Whisper / Parakeet 本地运行，快捷键触发、VAD、剪贴板粘贴，MIT 许可，跨平台
+
+二、VoiceStudio 相关项目：语音创作工作台，非会议转写专用
+
+debpalash/VoiceStudio 及其中文镜像
+
+地址：原版 github.com/debpalash/VoiceStudio；中文镜像 github.com/bayshier/voicestudio-zh
+
+定位：开源、完全本地的 ElevenLabs 替代品，核心是语音克隆、声音设计、视频配音、有声书制作，转写/听写是附属能力而非核心场景。AGPL-3.0，约 1.2 万+ stars，运行 16 个本地 TTS 引擎，覆盖 646 种语言。
+
+技术栈：Electron 桌面程序 + Python 后端服务，本机端口 3900，带 OpenAI 兼容 API 和 MCP。这一点和主流会议转写项目的 Tauri + Rust 路线截然相反——Electron 的包体积和内存占用更高，但 Web 技术栈的 UI 开发效率有优势。
+
+桌面端情况：macOS / Windows / Linux / Docker 全平台，桌面应用形态。Intel Mac 不支持本地后端（已知 issue #889）。
+
+转写能力：系统级实时听写，全局快捷键在任何应用中触发，转成文字后自动粘贴；可选本地 LLM 润色标点和格式，可选回声消除。适合个人口述、采访转录、周报口述，但不是为多人会议设计的——没有会议级的说话人分离、系统音频采集、会议工作流和结构化纪要导出。如果拿它做多人会议转写，会缺失关键的 diarization 和会议场景优化。
+
+适合谁：需要本地语音克隆 + 配音 + 顺带做个人听写的用户。不适合作为会议转写的主工具选型。
+
+mjlzz/voice-studio
+
+地址：github.com/mjlzz/voice-studio
+
+定位：轻量 ASR & TTS 工具箱，不是“VoiceStudio”主项目，但命名相近，容易混淆。
+
+技术栈：Python（FastAPI 后端）+ Web UI（Node.js），STT 基于 faster-whisper，TTS 支持 edge-tts / Piper / ONNX 中英混合。支持 CPU 推理、离线模式。
+
+桌面端情况：真正的桌面形态是“桌面悬浮话筒”——悬浮窗口 + 系统托盘，一键语音转文字并自动复制到剪贴板；同时提供 Web UI 和 CLI。严格说不是完整桌面应用，而是“桌面小部件 + 本地服务”的混合形态。
+
+转写能力：faster-whisper，中/英/日三语，支持实时流式与录音后转写两种模式，词级时间戳，导出 TXT / SRT / JSON。没有内置会议专用的说话人分离和系统音频采集工作流。
+
+适合谁：需要轻量听写/字幕转写、中英日场景、且不要求完整会议工作流的用户。
+
+三、横向对比
+
+技术栈与桌面端
+
+项目 桌面框架 转写内核 跨平台 安装/运行形态
+Meetily Tauri 2 + Rust + Next.js whisper.cpp / Parakeet Win / macOS 原生安装包，GPU 加速全面
+Liberty Tauri 2 + Rust + React + Python(FunASR) FunASR Windows 为主 托管 Python 运行时，Tauri 壳
+Talktrace Tauri 2 + Rust + React + FastAPI FunASR 在线+离线分层 Windows 本地服务 + 桌面壳
+Conversationaly Tauri / Rust transcribe.cpp（85 模型） Win / macOS / Linux 预构建安装包，跨平台最好
+Auricle 纯 Rust 单二进制 可插拔，本地 Whisper 为默认 Windows 39 MB MSI，API-first
+meeting-summarizer PySide6（Qt） 7 引擎可选 Windows 为主 传统 Qt 桌面，Python 子进程
+VoiceStudio Electron + Python 听写/转写为附属 Win / macOS / Linux / Docker 重型桌面 + 本地 API 服务
+mjlzz/voice-studio Web UI + 悬浮小部件 faster-whisper Win / macOS / Linux 悬浮话筒 + 本地服务
+
+会议转写能力对照
+
+能力维度 Meetily Liberty Talktrace Conversationaly Auricle meeting-summarizer
+中文优化 ⚠️ 弱（实测约 18.7%） ✅ FunASR 中文强 ✅ FunASR 中文优先 取决于所选模型 取决于所选模型 取决于所选引擎
+实时流式 ✅ 2–4 s 延迟 偏文件/队列处理 ✅ 在线 partial + 离线 final ✅ 流式模型支持 ✅ 实时 ✅ 实时/录音后
+说话人分离 ✅ 基础（Pro 完整） ✅ 有，且失败不编造 未强调 未在 README 强调 双说话人 ✅ sherpa-onnx / pyannote
+系统音频采集 ✅ bot-free 文件导入为主 ✅ WASAPI 麦克风+系统 ✅ 麦克风+系统 ✅ 系统 loopback ✅ WASAPI loopback
+结构化纪要导出 ✅ 摘要 ✅ DOCX 会议纪要 ✅ 证据/复盘工作流 ✅ Markdown ✅ Markdown ✅ 极其丰富
+本地 LLM 摘要 ✅ Ollama / BYO ✅ OpenAI 兼容 ✅ 可选 ✅ 捆绑 Gemma 4 ✅ 可选 ✅ 9 provider + MCP
+跨平台 Win / macOS Windows 为主 Windows 三平台 Windows Windows 为主
+工程成熟度/社区体量 最高（19K stars） 中等 小众 中等（Meetily fork） 小众但架构独特 小众但功能密度高
+
+四、选型建议（按场景）
+
+中文会议为主，本地部署，Windows 桌面：优先考察 Liberty 或 Talktrace。两者都基于 FunASR，中文识别基础优于 Whisper 系；Liberty 的说话人分离和 DOCX 纪要导出更产品化，Talktrace 的分层转写架构在“实时反馈 + 离线精修”的取舍上更精细，但需要实际中文会议样本验证其终稿质量。
+
+英语/多语言会议，追求最大社区生态和 Windows 覆盖：Meetily 仍是默认选项，但要清醒认识到它的中文能力是明确短板，且完整说话人分离在付费档。
+
+需要跨平台 + 模型灵活性：Conversationaly。三平台安装包 + 85 个模型 + 默认 Parakeet 1.94% WER，是“不想被单一模型锁定”场景下最宽的选择。
+
+开发者/API-first，想要轻量可编程引擎：Auricle。39 MB 单二进制、REST/WS/SSE 全暴露、MCP 可接入 agent 工作流，适合不想维护重型桌面 UI 的场景。
+
+需要多引擎对比 + 极致导出格式 + MCP 档案检索：meeting-summarizer。功能密度最高，PySide6 路线适合偏好 Python/Qt 的团队，但跨平台和 UI 现代感不如 Tauri 系。
+
+只要个人听写，不需要会议工作流：mjlzz/voice-studio 的悬浮话筒是轻量选择；VoiceStudio 适合“顺便听写”的语音创作用户，不建议作为会议转写主工具。

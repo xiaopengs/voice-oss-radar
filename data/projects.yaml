@@ -1,0 +1,911 @@
+# 语音开源雷达 · 结构化项目登记表
+# 维护规则：
+#   1. 每条必须包含 repo / category / license / one_liner
+#   2. verified 为"最后核实日期"，未核实的字段写 unknown，不要猜
+#   3. 权重许可与代码许可分开记（weights_license），两者常常不同
+#   4. 新增条目同时更新对应 docs/*.md
+
+meta:
+  version: "0.1.0"
+  updated_at: "2026-10-27"
+  maintainer: xiaopengs
+  scope: "语音方向开源项目：ASR / TTS / 全双工 / Agent 编排 / 说话人 / 端侧 / 音频前端 / 变声 / 翻译 / 会议应用"
+
+projects:
+  # ---------------- ASR ----------------
+  - id: funasr
+    name: FunASR
+    repo: https://github.com/modelscope/FunASR
+    category: asr
+    license: MIT
+    language: [zh, en, yue, ja, ko]
+    form: toolkit
+    one_liner: 阿里达摩院工业级语音识别工具包，中文 ASR 的事实标准
+    capabilities: [流式ASR, 离线ASR, VAD, 标点, 时间戳, 热词, 说话人验证, 情感识别]
+    note: "v1.4.0 (2026-07-31) 起提供 9 个自包含 llama.cpp/GGUF 运行时"
+    verified: "2026-10"
+
+  - id: sensevoice
+    name: SenseVoice
+    repo: https://github.com/FunAudioLLM/SenseVoice
+    category: asr
+    license: MIT
+    weights_license: unknown
+    language: [zh, en, yue, ja, ko]
+    form: model
+    one_liner: 非自回归多语言 ASR + 情感 + 音频事件，轻量低延迟
+    capabilities: [多语言ASR, 情感识别, 音频事件检测, 轻量部署]
+    note: "SenseVoice-Small 量化后约 136MB，适合端侧"
+    verified: "2026-10"
+
+  - id: qwen3-asr
+    name: Qwen3-ASR
+    repo: https://github.com/QwenLM/Qwen3-ASR
+    category: asr
+    license: Apache-2.0
+    weights_license: Apache-2.0
+    language: [52 languages]
+    form: model
+    one_liner: 开放权重、52 语言的 ASR 家族，支持流式与强制对齐
+    capabilities: [多语言ASR, 语言识别, 时间戳, 强制对齐, 流式, 微调, vLLM]
+    note: "约 13.5k→3.6k stars 区间波动，以仓库为准；0.6B/1.7B 有 int8 端侧导出"
+    verified: "2026-10"
+
+  - id: glm-asr
+    name: GLM-ASR
+    repo: https://github.com/zai-org/GLM-ASR
+    category: asr
+    license: Apache-2.0
+    language: [zh, en, dialect]
+    form: model
+    one_liner: 智谱 1.5B 语音识别模型，中文与方言表现突出
+    capabilities: [中文ASR, 方言, 标点, 轻量]
+    note: "GLM-ASR-Nano-2512；社区有 CTC head 版本 glm-asr-ctc"
+    verified: "2026-10"
+
+  - id: whisper
+    name: Whisper
+    repo: https://github.com/openai/whisper
+    category: asr
+    license: MIT
+    weights_license: MIT
+    language: [99 languages]
+    form: model
+    one_liner: 多语种 ASR 的历史基线，中文弱、易幻觉、无原生流式
+    capabilities: [多语言ASR, 翻译到英文, 时间戳]
+    note: "中文正式会议不建议直接用；large-v3 为常用档"
+    verified: "2026-10"
+
+  - id: faster-whisper
+    name: faster-whisper
+    repo: https://github.com/SYSTRAN/faster-whisper
+    category: asr
+    license: MIT
+    language: [99 languages]
+    form: runtime
+    one_liner: CTranslate2 实现的 Whisper，4 倍加速、int8 量化
+    capabilities: [Whisper推理加速, int8, VAD串联, 词级时间戳]
+    verified: "2026-10"
+
+  - id: whisperx
+    name: WhisperX
+    repo: https://github.com/m-bain/whisperX
+    category: asr
+    license: BSD-2-Clause
+    language: [99 languages]
+    form: pipeline
+    one_liner: Whisper + wav2vec2 对齐 + pyannote 分离，会议转写常用组合
+    capabilities: [词级时间戳, VAD, 说话人分离, 批处理]
+    note: "diarization 依赖 pyannote 权重（需 HF token）"
+    verified: "2026-10"
+
+  - id: whisper-cpp
+    name: whisper.cpp
+    repo: https://github.com/ggml-org/whisper.cpp
+    category: on-device
+    license: MIT
+    language: [99 languages]
+    form: runtime
+    one_liner: Whisper 的 C/C++ 重实现，GGUF 量化，无 Python 依赖
+    capabilities: [端侧ASR, Metal, CUDA, Vulkan, CoreML, 伪流式]
+    verified: "2026-10"
+
+  - id: parakeet
+    name: Parakeet (NeMo)
+    repo: https://github.com/NVIDIA/NeMo
+    category: asr
+    license: Apache-2.0
+    weights_license: CC-BY-4.0
+    language: [25 European languages]
+    form: model
+    one_liner: NVIDIA 0.6B TDT 模型，欧洲语言 WER 领先，常作会议应用默认
+    capabilities: [多语言ASR, 标点, 时间戳, GPU加速]
+    note: "parakeet-tdt-0.6b-v3 官方标称 1.94% WER（Conversationaly 引用）"
+    verified: "2026-10"
+
+  - id: moonshine
+    name: Moonshine
+    repo: https://github.com/usefulsensors/moonshine
+    category: on-device
+    license: MIT
+    language: [en, multi]
+    form: model
+    one_liner: 面向短音频的端侧 ASR，比 Whisper 快很多
+    capabilities: [端侧ASR, ONNX, 低延迟]
+    verified: "2026-10"
+
+  - id: vosk
+    name: Vosk
+    repo: https://github.com/alphacep/vosk-api
+    category: on-device
+    license: Apache-2.0
+    language: [20+ languages]
+    form: toolkit
+    one_liner: 轻量离线 ASR，绑定最全，精度落后于新一代模型
+    capabilities: [离线ASR, 多平台绑定, 小模型]
+    verified: "2026-10"
+
+  - id: wenet
+    name: WeNet
+    repo: https://github.com/wenet-e2e/wenet
+    category: asr
+    license: Apache-2.0
+    language: [zh, en]
+    form: toolkit
+    one_liner: 生产级流式 ASR 工具包（Zipformer）
+    capabilities: [流式ASR, 端到端建模, 部署工具链]
+    verified: "2026-10"
+
+  - id: voxtral
+    name: Voxtral
+    repo: https://github.com/mistralai
+    category: asr
+    license: Apache-2.0
+    language: [multi]
+    form: model
+    one_liner: Mistral 的语音理解模型（ASR + 音频问答）
+    capabilities: [ASR, 音频理解, 长音频]
+    verified: "2026-10"
+
+  - id: cocktailasr
+    name: CocktailASR-1
+    repo: https://github.com/XiaomiMiMo/CocktailASR
+    category: asr
+    license: Apache-2.0
+    language: [en]
+    form: model
+    one_liner: 目标说话人 ASR（只转写指定人声），含负样本拒识
+    capabilities: [目标说话人ASR, 负样本拒识, CoT]
+    note: "LibriMix 3mix 约 12.29% WER；适合多人混说场景"
+    verified: "2026-10"
+
+  - id: moss-transcribe-diarize
+    name: MOSS-Transcribe-Diarize
+    repo: https://huggingface.co/OpenMOSS-Team
+    category: asr
+    license: Apache-2.0
+    language: [zh, en]
+    form: model
+    one_liner: 一次前向输出转写 + 时间戳 + 说话人标签
+    capabilities: [长音频转写, 说话人分离, 一体化]
+    note: "FunASR 已支持 AutoModel 接入"
+    verified: "2026-10"
+
+  # ---------------- TTS ----------------
+  - id: qwen3-tts
+    name: Qwen3-TTS
+    repo: https://github.com/QwenLM/Qwen3-TTS
+    category: tts
+    license: Apache-2.0
+    weights_license: Apache-2.0
+    language: [10 languages]
+    form: model
+    one_liner: 覆盖流式、声音设计、克隆的开放权重 TTS，商用最友好
+    capabilities: [流式TTS, 声音设计, 零样本克隆, vLLM, 微调, WebUI]
+    verified: "2026-10"
+
+  - id: omnivoice
+    name: OmniVoice
+    repo: https://github.com/k2-fsa/OmniVoice
+    category: tts
+    license: Apache-2.0
+    weights_license: CC-BY-NC-4.0
+    language: [600+ languages]
+    form: model
+    one_liner: 600+ 语言的零样本克隆 + 指令化声音设计，RTF 低至 0.025
+    capabilities: [零样本克隆, 声音设计, 非言语符号, 拼音/音标纠音, 批量CLI, FlashInfer]
+    note: "⚠️ 权重 CC-BY-NC 不可商用；VoiceStudio 默认 TTS 引擎之一"
+    verified: "2026-10"
+
+  - id: cosyvoice
+    name: CosyVoice
+    repo: https://github.com/FunAudioLLM/CosyVoice
+    category: tts
+    license: Apache-2.0
+    weights_license: unknown
+    language: [zh, en, ja, yue, ko]
+    form: model
+    one_liner: 中文听感第一梯队，支持流式与自然语言指令控制
+    capabilities: [零样本克隆, 流式TTS, 指令控制, 方言]
+    note: "版本间接口有破坏性变更，需锁版本"
+    verified: "2026-10"
+
+  - id: indextts
+    name: IndexTTS
+    repo: https://github.com/index-tts/index-tts
+    category: tts
+    license: Apache-2.0
+    weights_license: unknown
+    language: [zh, en]
+    form: model
+    one_liner: 中文零样本 TTS，第二代支持精确时长控制与情感迁移
+    capabilities: [零样本克隆, 时长控制, 情感迁移]
+    verified: "2026-10"
+
+  - id: gpt-sovits
+    name: GPT-SoVITS
+    repo: https://github.com/RVC-Boss/GPT-SoVITS
+    category: tts
+    license: MIT
+    language: [zh, en, ja, ko, yue]
+    form: toolkit
+    one_liner: 1 分钟数据少样本微调，中文社区生态最成熟
+    capabilities: [少样本微调, 零样本, WebUI全流程]
+    note: "每个音色需单独训练，规模化成本高；非流式"
+    verified: "2026-10"
+
+  - id: f5-tts
+    name: F5-TTS
+    repo: https://github.com/SWivid/F5-TTS
+    category: tts
+    license: MIT
+    weights_license: CC-BY-NC
+    language: [zh, en]
+    form: model
+    one_liner: Flow matching 架构，长文本低幻觉
+    capabilities: [零样本克隆, 长文本稳定, 速度控制]
+    verified: "2026-10"
+
+  - id: openvoice
+    name: OpenVoice v2
+    repo: https://github.com/myshell-ai/OpenVoice
+    category: tts
+    license: MIT
+    language: [multi]
+    form: model
+    one_liner: 拆成"TTS 基座 + 音色转换器"，转换仅约 100ms
+    capabilities: [音色转换, 跨语言克隆, 轻量转换器]
+    note: "必须 pip install MeloTTS 作基座；约 37.6k stars"
+    verified: "2026-10"
+
+  - id: coqui-tts
+    name: Coqui TTS / XTTS-v2
+    repo: https://github.com/coqui-ai/TTS
+    category: tts
+    license: MPL-2.0
+    weights_license: CPML
+    language: [17 languages]
+    form: toolkit
+    one_liner: 生态最全的经典 TTS 工具包，XTTS 权重非商用
+    capabilities: [多模型, 零样本克隆, 训练工具链]
+    note: "公司已关闭，社区维护；约 46k stars"
+    verified: "2026-10"
+
+  - id: kokoro
+    name: Kokoro
+    repo: https://github.com/hexgrad/kokoro
+    category: tts
+    license: Apache-2.0
+    language: [multi]
+    form: model
+    one_liner: 82M 超轻量 TTS，质量/体积比极高
+    capabilities: [轻量TTS, 本地部署, 多音色]
+    verified: "2026-10"
+
+  - id: piper
+    name: Piper
+    repo: https://github.com/rhasspy/piper
+    category: tts
+    license: MIT
+    language: [30+ languages]
+    form: runtime
+    one_liner: 端侧 TTS 标准方案，树莓派可跑
+    capabilities: [端侧TTS, 多语言, 极低延迟]
+    verified: "2026-10"
+
+  - id: melotts
+    name: MeloTTS
+    repo: https://github.com/myshell-ai/MeloTTS
+    category: tts
+    license: MIT
+    language: [zh, en, ja, ko, es, fr]
+    form: model
+    one_liner: 轻量多语 TTS，常作克隆方案的基座
+    capabilities: [轻量TTS, 多语言, CPU可用]
+    verified: "2026-10"
+
+  - id: chatterbox
+    name: Chatterbox
+    repo: https://github.com/resemble-ai/chatterbox
+    category: tts
+    license: MIT
+    language: [multi]
+    form: model
+    one_liner: 0.5B 开源 TTS，情绪夸张度可调
+    capabilities: [零样本克隆, 情绪控制, 多语]
+    verified: "2026-10"
+
+  - id: fish-speech
+    name: Fish-Speech
+    repo: https://github.com/fishaudio/fish-speech
+    category: tts
+    license: unknown
+    language: [multi]
+    form: model
+    one_liner: 多语零样本克隆，社区活跃
+    capabilities: [零样本克隆, 多语言]
+    verified: "2026-10"
+
+  - id: spark-tts
+    name: Spark-TTS
+    repo: https://github.com/SparkAudio/Spark-TTS
+    category: tts
+    license: unknown
+    language: [zh, en]
+    form: model
+    one_liner: 基于 LLM 的简洁 TTS 架构
+    capabilities: [零样本克隆, 声音属性控制]
+    verified: "2026-10"
+
+  - id: pocket-tts
+    name: Pocket TTS
+    repo: https://github.com/kyutai-labs
+    category: tts
+    license: unknown
+    language: [multi]
+    form: model
+    one_liner: 100M 模型，CPU 上快于实时，一行代码接入
+    capabilities: [超轻量TTS, CPU实时, 多语言]
+    verified: "2026-10"
+
+  # ---------------- Speech-to-Speech ----------------
+  - id: moshi
+    name: Moshi
+    repo: https://github.com/kyutai-labs/moshi
+    category: speech-to-speech
+    license: Apache-2.0
+    weights_license: CC-BY-4.0
+    language: [en]
+    form: model
+    one_liner: 首个开源全双工语音对话模型，底层 Mimi codec
+    capabilities: [全双工对话, 可打断, 副语言感知, PyTorch/MLX/Rust]
+    note: "代码 Apache-2.0 + MIT 双许可；微调见 moshi-finetune"
+    verified: "2026-10"
+
+  - id: hibiki
+    name: Hibiki / Hibiki-Zero
+    repo: https://github.com/kyutai-labs/hibiki
+    category: speech-translation
+    license: CC-BY-4.0
+    language: [4 languages]
+    form: model
+    one_liner: 流式语音到语音同传，输出目标语音 + 文本并保留原音色
+    capabilities: [实时S2ST, 音色保留, 无需对齐数据训练]
+    verified: "2026-10"
+
+  - id: unmute
+    name: Unmute
+    repo: https://github.com/kyutai-labs/unmute
+    category: voice-agent
+    license: unknown
+    language: [multi]
+    form: framework
+    one_liner: 给任意文本 LLM 加"听说"能力，低延迟串联
+    capabilities: [STT+TTS串联, 任意LLM接入]
+    verified: "2026-10"
+
+  - id: qwen-omni
+    name: Qwen-Omni (2.5/3)
+    repo: https://github.com/QwenLM/Qwen2.5-Omni
+    category: speech-to-speech
+    license: Apache-2.0
+    language: [multi]
+    form: model
+    one_liner: Thinker-Talker 双塔，语音/图像/文本输入，语音+文本输出
+    capabilities: [语音对话, 语音理解, 多模态, 中文强]
+    note: "非严格全双工，打断体验需自建"
+    verified: "2026-10"
+
+  - id: glm-4-voice
+    name: GLM-4-Voice
+    repo: https://github.com/THUDM/GLM-4-Voice
+    category: speech-to-speech
+    license: Apache-2.0
+    language: [zh, en]
+    form: model
+    one_liner: 端到端中文语音对话，情绪与语速可指令调节
+    capabilities: [端到端语音对话, 情绪控制, 语速控制, 流式]
+    verified: "2026-10"
+
+  - id: step-audio2
+    name: Step-Audio 2
+    repo: https://github.com/stepfun-ai/Step-Audio2
+    category: speech-to-speech
+    license: Apache-2.0
+    language: [zh, en]
+    form: model
+    one_liner: 面向真实业务的端到端语音大模型，强调副语言理解与工具调用
+    capabilities: [端到端语音, 副语言理解, 工具调用, 语音RAG]
+    verified: "2026-10"
+
+  - id: ultravox
+    name: Ultravox
+    repo: https://github.com/fixie-ai/ultravox
+    category: speech-to-speech
+    license: MIT
+    language: [multi]
+    form: model
+    one_liner: 轻量语音 LLM（语音进、文本出），易微调
+    capabilities: [语音理解, 语音问答, 微调]
+    verified: "2026-10"
+
+  - id: minicpm-o
+    name: MiniCPM-o
+    repo: https://github.com/OpenBMB/MiniCPM-o
+    category: speech-to-speech
+    license: unknown
+    language: [zh, en]
+    form: model
+    one_liner: 端侧多模态实时语音对话
+    capabilities: [端侧多模态, 实时语音对话]
+    verified: "2026-10"
+
+  # ---------------- Voice Agent 编排 ----------------
+  - id: livekit-agents
+    name: LiveKit Agents
+    repo: https://github.com/livekit/agents
+    category: voice-agent
+    license: Apache-2.0
+    language: [py, js]
+    form: framework
+    one_liner: 生产级实时语音 Agent 框架，WebRTC + SIP 基础设施完备
+    capabilities: [WebRTC, SIP电话, 多人房间, 打断, 多Agent交接, 可自托管]
+    verified: "2026-10"
+
+  - id: pipecat
+    name: Pipecat
+    repo: https://github.com/pipecat-ai/pipecat
+    category: voice-agent
+    license: BSD-2-Clause
+    language: [py]
+    form: framework
+    one_liner: Python pipeline 式语音 Agent 框架，组件全可插拔
+    capabilities: [可插拔pipeline, WebRTC/WS/本地音频, 打断, 实时模型接入]
+    verified: "2026-10"
+
+  - id: vocode
+    name: Vocode
+    repo: https://github.com/vocodedev/vocode-core
+    category: voice-agent
+    license: MIT
+    language: [py]
+    form: framework
+    one_liner: 传统语音应用快速组装（电话/呼叫中心）
+    capabilities: [电话接入, 模块化STT/LLM/TTS, 本地音频]
+    note: "近期活跃度需复核"
+    verified: "2026-10"
+
+  - id: bolna
+    name: Bolna
+    repo: https://github.com/bolna-ai/bolna
+    category: voice-agent
+    license: unknown
+    language: [py]
+    form: framework
+    one_liner: 配置驱动的电话 Agent（外呼/客服）
+    capabilities: [Twilio/Plivo, JSON流程配置, 外呼]
+    verified: "2026-10"
+
+  - id: ten-framework
+    name: TEN Framework
+    repo: https://github.com/TEN-framework/ten-framework
+    category: voice-agent
+    license: Apache-2.0
+    language: [cpp, go, py]
+    form: framework
+    one_liner: 低延迟实时多模态 Agent 运行时，跨端友好
+    capabilities: [低延迟, 实时多模态, 跨端]
+    verified: "2026-10"
+
+  # ---------------- 说话人 ----------------
+  - id: pyannote
+    name: pyannote.audio
+    repo: https://github.com/pyannote/pyannote-audio
+    category: diarization
+    license: MIT
+    weights_license: gated
+    language: [multi]
+    form: toolkit
+    one_liner: 说话人分离精度标杆，权重需 HF 授权
+    capabilities: [说话人分离, 说话人嵌入, 重叠语音检测]
+    note: "需接受用户协议 + HF token；商用条款逐个模型确认"
+    verified: "2026-10"
+
+  - id: 3d-speaker
+    name: 3D-Speaker
+    repo: https://github.com/modelscope/3D-Speaker
+    category: diarization
+    license: Apache-2.0
+    language: [zh, multi]
+    form: toolkit
+    one_liner: 阿里一站式说话人工具包，中文/方言友好
+    capabilities: [声纹验证, 说话人识别, 分离, CAM++嵌入]
+    verified: "2026-10"
+
+  - id: diarizen
+    name: DiariZen
+    repo: https://github.com/BUTSpeechFIT/DiariZen
+    category: diarization
+    license: MIT
+    language: [multi]
+    form: model
+    one_liner: 端到端说话人分离，重叠语音处理强
+    capabilities: [端到端分离, 重叠语音]
+    verified: "2026-10"
+
+  - id: wespeaker
+    name: WeSpeaker
+    repo: https://github.com/wenet-e2e/wespeaker
+    category: diarization
+    license: Apache-2.0
+    language: [multi]
+    form: toolkit
+    one_liner: 声纹嵌入训练与评测工具链
+    capabilities: [声纹嵌入, 训练/评测, 说话人验证]
+    verified: "2026-10"
+
+  # ---------------- 端侧运行时 ----------------
+  - id: sherpa-onnx
+    name: sherpa-onnx
+    repo: https://github.com/k2-fsa/sherpa-onnx
+    category: on-device
+    license: Apache-2.0
+    language: [cpp, py, csharp, java, kotlin, swift, go, dart, rust, wasm]
+    form: runtime
+    one_liner: 端侧语音全家桶：ASR/TTS/VAD/分离/声纹/音频事件
+    capabilities: [离线ASR, 离线TTS, VAD, 说话人分离, 声纹管理, 跨平台绑定]
+    note: "v2.0.0 (2026-10-23)；v1.13.6 补 Flutter VAD+ASR 示例"
+    verified: "2026-10"
+
+  - id: ctranslate2
+    name: CTranslate2
+    repo: https://github.com/OpenNMT/CTranslate2
+    category: on-device
+    license: MIT
+    language: [cpp, py]
+    form: runtime
+    one_liner: 高效 Transformer 推理引擎（faster-whisper 底座）
+    capabilities: [int8量化, CPU/GPU推理, 批处理]
+    verified: "2026-10"
+
+  - id: onnxruntime
+    name: ONNX Runtime
+    repo: https://github.com/microsoft/onnxruntime
+    category: on-device
+    license: MIT
+    language: [cpp, py, csharp, java]
+    form: runtime
+    one_liner: 通用推理后端，端侧语音方案的事实地基
+    capabilities: [跨平台推理, 量化, 多执行提供器]
+    verified: "2026-10"
+
+  - id: llama-cpp
+    name: llama.cpp
+    repo: https://github.com/ggml-org/llama.cpp
+    category: on-device
+    license: MIT
+    language: [cpp]
+    form: runtime
+    one_liner: GGUF 推理引擎，经 mmproj 支持语音 LLM
+    capabilities: [GGUF量化, 语音LLM, CPU推理]
+    note: "音频支持随模型而异，量化后精度损失明显"
+    verified: "2026-10"
+
+  # ---------------- 音频前端 ----------------
+  - id: silero-vad
+    name: Silero VAD
+    repo: https://github.com/snakers4/silero-vad
+    category: audio-frontend
+    license: MIT
+    language: [any]
+    form: model
+    one_liner: 最广泛使用的开源 VAD，模型约 1–2MB
+    capabilities: [语音活动检测, ONNX, 30ms帧, 参数可调]
+    note: "对音乐/键盘/呼吸声会误判；8kHz 需重采样"
+    verified: "2026-10"
+
+  - id: ten-vad
+    name: TEN VAD
+    repo: https://github.com/TEN-framework/ten-vad
+    category: audio-frontend
+    license: Apache-2.0
+    language: [any]
+    form: model
+    one_liner: 轻量端侧 VAD
+    capabilities: [语音活动检测, 端侧, 低开销]
+    verified: "2026-10"
+
+  - id: webrtcvad
+    name: WebRTC VAD (py-webrtcvad)
+    repo: https://github.com/wiseman/py-webrtcvad
+    category: audio-frontend
+    license: MIT
+    language: [any]
+    form: library
+    one_liner: 极轻 VAD，速度快但误判多
+    capabilities: [语音活动检测, 极低开销]
+    verified: "2026-10"
+
+  - id: deepfilternet
+    name: DeepFilterNet
+    repo: https://github.com/Rikorose/DeepFilterNet
+    category: audio-frontend
+    license: MIT
+    language: [any]
+    form: model
+    one_liner: 48kHz 实时语音降噪与去混响
+    capabilities: [实时降噪, 去混响, Rust/Python]
+    verified: "2026-10"
+
+  - id: rnnoise
+    name: RNNoise
+    repo: https://github.com/xiph/rnnoise
+    category: audio-frontend
+    license: BSD-3-Clause
+    language: [any]
+    form: library
+    one_liner: 超轻降噪，C 实现
+    capabilities: [降噪, 极低开销]
+    verified: "2026-10"
+
+  - id: clearervoice
+    name: ClearerVoice-Studio
+    repo: https://github.com/modelscope/ClearerVoice-Studio
+    category: audio-frontend
+    license: Apache-2.0
+    language: [any]
+    form: toolkit
+    one_liner: 语音增强/分离/超分/去混响一站式工具箱
+    capabilities: [语音增强, 语音分离, 超分, 目标说话人提取, 去混响]
+    verified: "2026-10"
+
+  - id: demucs
+    name: Demucs
+    repo: https://github.com/facebookresearch/demucs
+    category: audio-frontend
+    license: MIT
+    language: [any]
+    form: model
+    one_liner: 音乐音源分离事实标准（不适合会议人声分离）
+    capabilities: [音乐分离, htdemucs]
+    verified: "2026-10"
+
+  - id: speexdsp
+    name: SpeexDSP
+    repo: https://github.com/xiph/speexdsp
+    category: audio-frontend
+    license: BSD-3-Clause
+    language: [any]
+    form: library
+    one_liner: 回声消除与预处理，成熟稳定
+    capabilities: [AEC, 重采样, 预处理]
+    verified: "2026-10"
+
+  # ---------------- 变声 ----------------
+  - id: rvc
+    name: RVC
+    repo: https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI
+    category: voice-conversion
+    license: MIT
+    language: [any]
+    form: toolkit
+    one_liner: 10 分钟数据微调，相似度最高的变声方案
+    capabilities: [实时变声, 特征检索, WebUI, rvc-python]
+    note: "每个音色需训练；明确禁止未授权模仿"
+    verified: "2026-10"
+
+  - id: seed-vc
+    name: Seed-VC
+    repo: https://github.com/Plachtaa/seed-vc
+    category: voice-conversion
+    license: unknown
+    language: [any]
+    form: model
+    one_liner: 1–30 秒参考音频的零样本变声，支持实时与歌声
+    capabilities: [零样本变声, 实时, 歌声转换]
+    verified: "2026-10"
+
+  - id: so-vits-svc
+    name: so-vits-svc
+    repo: https://github.com/svc-develop-team/so-vits-svc
+    category: voice-conversion
+    license: AGPL-3.0
+    language: [any]
+    form: toolkit
+    one_liner: 经典歌声转换方案，AGPL 对商用不友好
+    capabilities: [歌声转换, 微调]
+    note: "AGPL-3.0：网络服务使用也触发开源义务"
+    verified: "2026-10"
+
+  - id: knn-vc
+    name: kNN-VC
+    repo: https://github.com/bshall/kNN-VC
+    category: voice-conversion
+    license: MIT
+    language: [any]
+    form: model
+    one_liner: WavLM 特征 + kNN 检索，无需训练的 baseline
+    capabilities: [零样本变声, 简单可复现]
+    verified: "2026-10"
+
+  - id: step-audio-editx
+    name: Step-Audio-EditX
+    repo: https://github.com/stepfun-ai/Step-Audio-EditX
+    category: voice-conversion
+    license: unknown
+    language: [zh, en]
+    form: model
+    one_liner: 3B 语音编辑模型，可改情感与副语言而非只换音色
+    capabilities: [情感编辑, 风格编辑, 副语言插入]
+    verified: "2026-10"
+
+  # ---------------- 语音翻译 ----------------
+  - id: seamless
+    name: SeamlessM4T / SeamlessStreaming
+    repo: https://github.com/facebookresearch/seamless_communication
+    category: speech-translation
+    license: CC-BY-NC-4.0
+    language: [100 languages]
+    form: model
+    one_liner: 覆盖最广的统一语音翻译模型族，含流式同传
+    capabilities: [S2ST, S2TT, T2ST, ASR, 流式同传]
+    note: "⚠️ 禁止商用；中文方向弱于专门模型"
+    verified: "2026-10"
+
+  - id: nllb
+    name: NLLB
+    repo: https://github.com/facebookresearch/fairseq/tree/nllb
+    category: speech-translation
+    license: CC-BY-NC-4.0
+    language: [200 languages]
+    form: model
+    one_liner: 级联方案中的文本翻译层
+    capabilities: [多语文本翻译]
+    verified: "2026-10"
+
+  # ---------------- 会议桌面应用 ----------------
+  - id: meetily
+    name: Meetily
+    repo: https://github.com/zackriya-solutions/meetily
+    category: meeting-app
+    license: unknown
+    language: [en, multi]
+    form: desktop
+    one_liner: 赛道体量最大的本地会议转写应用（约 19K stars，305K+ 下载）
+    capabilities: [实时转写, 说话人分离, 摘要, 系统音频采集, GPU加速]
+    note: "中文实测约 18.7%；完整说话人分离在 Pro 付费档"
+    verified: "2026-10"
+
+  - id: liberty
+    name: Liberty
+    repo: https://github.com/whalesky-labs/Liberty
+    category: meeting-app
+    license: unknown
+    language: [zh, en]
+    form: desktop
+    one_liner: 中文会议产品化标杆，Tauri 壳 + FunASR 内核
+    capabilities: [FunASR中文转写, 方言, 说话人分离(失败不编造), DOCX纪要导出]
+    note: "Windows 为主；托管 Python 运行时较重"
+    verified: "2026-10"
+
+  - id: talktrace
+    name: 言迹 Talktrace (meeting-copilot)
+    repo: https://github.com/luguochang/meeting-copilot
+    category: meeting-app
+    license: unknown
+    language: [zh]
+    form: desktop
+    one_liner: 在线 partial + 离线 final 双阶段转写架构
+    capabilities: [FunASR, 双阶段转写, WASAPI双轨采集, 证据化建议]
+    note: "社区体量小，需自行验证终稿质量"
+    verified: "2026-10"
+
+  - id: conversationaly
+    name: Conversationaly
+    repo: https://github.com/bykof/conversationaly
+    category: meeting-app
+    license: unknown
+    language: [multi]
+    form: desktop
+    one_liner: Meetily fork，85 个模型 + 三平台安装包
+    capabilities: [多模型切换, 流式, 捆绑Gemma4摘要, Metal/CUDA/Vulkan/ROCm]
+    verified: "2026-10"
+
+  - id: auricle
+    name: Auricle
+    repo: https://github.com/ManeeshJupalle/Auricle
+    category: meeting-app
+    license: unknown
+    language: [multi]
+    form: desktop
+    one_liner: 约 39MB 单 Rust 二进制，API-first 会议转写
+    capabilities: [REST/WS/SSE, MCP, 本地OCR copilot, 双人转写, 自动更新]
+    verified: "2026-10"
+
+  - id: meeting-summarizer
+    name: meeting-summarizer
+    repo: https://github.com/john7ross/meeting-summarizer
+    category: meeting-app
+    license: unknown
+    language: [multi, ru]
+    form: desktop
+    one_liner: PySide6 桌面，7 引擎可选 + 极致导出 + MCP
+    capabilities: [多引擎, sherpa-onnx分离, 多格式导出, Obsidian/Sheets, MCP]
+    verified: "2026-10"
+
+  - id: whisper-meeting-assistant
+    name: Whisper Meeting Assistant
+    repo: https://github.com/bishoku/whisper-meeting-assistant
+    category: meeting-app
+    license: unknown
+    language: [multi]
+    form: desktop
+    one_liner: macOS 专用，ScreenCaptureKit 直采 + 说话人持久化
+    capabilities: [系统音频采集, pyannote分离, voice profile, Metal]
+    verified: "2026-10"
+
+  - id: meeting-transcript
+    name: meeting_transcript
+    repo: https://github.com/yoshi-bbb/meeting_transcript
+    category: meeting-app
+    license: unknown
+    language: [multi]
+    form: desktop
+    one_liner: 极简录音 + CPU int8 faster-whisper，无需 GPU
+    capabilities: [CPU转写, loopback采集]
+    verified: "2026-10"
+
+  - id: handy
+    name: Handy
+    repo: https://github.com/cjpais/handy
+    category: meeting-app
+    license: MIT
+    language: [multi]
+    form: desktop
+    one_liner: 快捷键触发 + VAD + 剪贴板粘贴的轻量听写工具
+    capabilities: [全局快捷键, VAD, 本地Whisper/Parakeet]
+    note: "仓库地址待复核（原文标注为推断）"
+    verified: "2026-10"
+
+  - id: voicestudio
+    name: VoiceStudio
+    repo: https://github.com/debpalash/VoiceStudio
+    category: voice-studio
+    license: AGPL-3.0
+    language: [646 languages]
+    form: desktop
+    one_liner: 本地 ElevenLabs 替代品，16 个 TTS 引擎 + 系统级听写
+    capabilities: [语音克隆, 声音设计, 视频配音, 有声书, 实时听写, MCP]
+    note: "非会议转写工具：无会议级 diarization 与系统音频工作流；Intel Mac 不支持本地后端"
+    verified: "2026-10"
+
+  - id: voice-studio-lite
+    name: voice-studio (mjlzz)
+    repo: https://github.com/mjlzz/voice-studio
+    category: voice-studio
+    license: unknown
+    language: [zh, en, ja]
+    form: desktop
+    one_liner: 轻量 ASR & TTS 工具箱 + 桌面悬浮话筒
+    capabilities: [faster-whisper, 实时流式, 词级时间戳, 多TTS后端]
+    verified: "2026-10"
