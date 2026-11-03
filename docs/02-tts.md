@@ -19,7 +19,9 @@
 | Piper | [rhasspy/piper](https://github.com/rhasspy/piper) | MIT | 各 voice 单独 | 30+ | 端侧/树莓派，极快 | 2026-10 |
 | MeloTTS | [myshell-ai/MeloTTS](https://github.com/myshell-ai/MeloTTS) | MIT | MIT | 中/英/日/韩/西/法 | 轻量多语，常作克隆基座 | 2026-10 |
 | Chatterbox | [resemble-ai/chatterbox](https://github.com/resemble-ai/chatterbox) | MIT | MIT | 多语（V3） | 0.5B，情绪夸张度可调 | 2026-10 |
-| Fish-Speech | [fishaudio/fish-speech](https://github.com/fishaudio/fish-speech) | 见仓库 | 见仓库 | 多语 | 零样本克隆，社区活跃 | 2026-10 |
+| Fish-Speech / Drama 3 | [fishaudio/fish-speech](https://github.com/fishaudio/fish-speech) | 见仓库 | **Community License v1.0** | 83 语种 | 零样本克隆；Drama 3 为 35B MoE，16 角色群戏 | 2026-11 |
+| Ming-3.0-tts | [inclusionAI/Ming-3.0-tts](https://github.com/inclusionAI/Ming-3.0-tts) | MIT | MIT | 中/英 | 0.5B，导演模式（情绪/重读/停顿） | 2026-11 |
+| Audio8-TTS-Realistic | [Audio8-AI/Audio8_TTS](https://github.com/Audio8-AI/Audio8_TTS) | Apache-2.0 | Apache-2.0 | 23 语种 | 0.6B DualAR，realism critic 强化学习 | 2026-11 |
 | Spark-TTS | [SparkAudio/Spark-TTS](https://github.com/SparkAudio/Spark-TTS) | 见仓库 | 见仓库 | 中/英 | 基于 LLM 的简洁架构 | 2026-10 |
 | Pocket TTS | [kyutai-labs](https://github.com/kyutai-labs) | 见仓库 | 见仓库 | 多语 | 100M，**CPU 实时**，一行调用 | 2026-10 |
 | Kyutai TTS 1.6B | [kyutai-labs](https://github.com/kyutai-labs) | 见仓库 | 见仓库 | 多语 | 低延迟流式，配套 Unmute | 2026-10 |
@@ -106,6 +108,24 @@
 3. **再确认延迟**：要流式（<300ms 首包）只有 Qwen3-TTS、CosyVoice、Kyutai TTS、Pocket TTS 这条路
 4. **再确认语言**：600+ 语言只有 OmniVoice 一家，但它是非商用权重
 5. **最后试听**：同一段中文长句 + 一段中英混排 + 一段数字/单位，三个样本足够判断真实水平
+
+### Ming-3.0-tts — 0.5B 就能"演"
+
+不是"念得更像"，是"按指令演"：指定情绪走向、重读位置、停顿，句中可以插笑声和叹息。Voice Design 还能用文字直接设定音色。
+
+0.5B 是 Qwen2.5-0.5B 稠密骨干 + DiT head，BF16 包 2.96GB；另有 tiny 版 7.9B/A1.3B MoE 做多说话人长文本。**但官方测试环境是 80GB H800，消费级显存数据没公开**——小参数量不等于小显存，先自己实测。
+
+### Fish Audio Drama 3 — 专为群戏设计
+
+35B MoE，一份剧本最多 16 个角色，括号里的舞台指示会被念出来。这是把"有声书/短剧配音"当第一场景在做，而不是把 TTS 当单句合成器。
+
+**许可要格外小心**：Fish Audio Community License v1.0，年收入低于 50 万美元可免费商用；超出该门槛、或作为 TTS/克隆/推理服务对外提供，需单独授权；且禁止未经同意克隆真人声音。权重约 40GB，8GB 显存能跑但要把专家放系统内存。
+
+### Audio8-TTS-Realistic — 治"念得准但听着假"
+
+用真人录音当评分基准训练 realism critic，再上 GRPO 强化学习。CV3 九语种平均错误率 4.86%，优于 Qwen3-TTS-1.7B 的 7.73%。
+
+**短板很具体**：泰语 WER 48.57%、粤语 CER 31.35%。多语种宣传和单语种可用是两件事——部署前先跑你的目标语种。需 PyTorch 2.5+ / Transformers 4.57+，且要 `trust_remote_code`。
 
 ## 常见坑
 

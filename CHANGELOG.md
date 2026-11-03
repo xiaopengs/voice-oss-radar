@@ -1,5 +1,26 @@
 # 变更记录
 
+## v0.3.0 - 2026-11-03
+
+### 新增
+
+收录 9 个 2026 年 10–11 月新开源语音项目，项目总数 77 → 86：
+
+- **ASR**：Nemotron 3.5 Transcribe（NVIDIA，OpenMDW-1.1）、Ming-3.0-asr-tiny（蚂蚁百灵，MIT）、Audio8 ASR Infinite（Apache-2.0）
+- **TTS**：Ming-3.0-tts（MIT）、Fish Audio Drama 3（Community License v1.0）、Audio8-TTS-Realistic（Apache-2.0）
+- **端侧**：Gradium Phonon（代码 MIT OR Apache-2.0，权重 31m 为 Apache-2.0 / 40m 及多语为 CC BY-NC 4.0）
+- **语音 Agent**：Dograh（BSD-2）、Gradbot（MIT OR Apache-2.0）
+
+### 变更
+
+- `Fish-Speech` 条目更新为 `Fish-Speech / Drama 3`，许可明确为 Fish Audio Community License v1.0（年收入低于 50 万美元可免费商用）
+- 重新生成 `docs/index.html`：86 张卡片，许可分布 可商用 62 / 需逐项确认 5 / 禁止商用 2 / 待确认 17
+- `docs/01-asr.md`、`02-tts.md`、`04-voice-agent.md`、`06-on-device.md` 主表与重点条目同步补齐
+
+### 未收录说明
+
+- **Block Dessa**（全双工语音模型）未收录：只有 demo 与 waitlist，无权重、无代码、无 API、无参数规模，收录会污染"可商用/可自托管"的判断
+
 ## v0.2.0 - 2026-10-27
 
 - 新增 `docs/index.html`：单文件静态索引页，77 个项目卡片化展示，支持分类筛选、关键词搜索、许可筛选

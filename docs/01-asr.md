@@ -21,6 +21,9 @@
 | Vosk | [alphacep/vosk-api](https://github.com/alphacep/vosk-api) | Apache-2.0 | 20+ 语言 | 端侧，多语言绑定 | 2026-10 |
 | WeNet | [wenet-e2e/wenet](https://github.com/wenet-e2e/wenet) | Apache-2.0 | 中/英 | 生产级流式服务 | 2026-10 |
 | Voxtral | [mistralai/Voxtral](https://huggingface.co/mistralai) | Apache-2.0 | 多语种 + 音频理解 | GPU，语音 LLM | 2026-10 |
+| Nemotron 3.5 Transcribe | [nvidia/NVIDIA-Nemotron-3.5-Transcribe-30B-A4B](https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Transcribe-30B-A4B) | OpenMDW-1.1 | 40 语言（31 语种英互译） | 30B-A4B，BF16/FP8/NVFP4 单卡 | 2026-11 |
+| Ming-3.0-asr-tiny | [inclusionAI/Ming-3.0-asr-tiny](https://huggingface.co/inclusionAI/Ming-3.0-asr-tiny) | MIT | 中/英 + 方言 | 8.9B-A2.1B MoE，权重约 11GB | 2026-11 |
+| Audio8 ASR Infinite | [Edge0-AI/Audio8-ASR-Infinite](https://github.com/Edge0-AI/Audio8-ASR-Infinite) | Apache-2.0 | 中/英 | 流式，滚动 KV cache，vLLM | 2026-11 |
 
 ---
 
@@ -106,6 +109,24 @@
 3. **再定延迟**：实时字幕要 <500ms 首字，只有流式模型能满足；批处理场景别为流式付溢价
 4. **最后验精度**：用**你自己的 30 分钟真实录音**跑一遍，别信模型卡。重点看：专业术语、人名、数字、中英混说
 5. **许可**：代码许可和权重许可分开看；商用务必读权重页
+
+### Nemotron 3.5 Transcribe — 一个 checkpoint 包了五件事
+
+英伟达把转录、翻译、说话人归属、说话人标注、音频问答塞进同一个 30B-A4B 模型。HF Open ASR Leaderboard 英文组开放权重第一（5.33% 平均 WER），DAI-ASR-I18N 21 语种 DER 18.26%，是 14 个系统里最低的。
+
+**但它只处理录音，不支持直播流**——要实时字幕，这条路走不通。许可 OpenMDW-1.1 不是常见许可，商用前必须读原文。
+
+### Ming-3.0-asr-tiny — 把上下文当输入
+
+Context ASR 的思路不是"换个更好的声学模型"，是"把你已经知道的信息喂进去"。给候选热词表 + 对话上文，它能纠专业术语与同音词——这恰好是通用 ASR 最常翻车的地方（人名、产品名、缩写、数字）。
+
+Ling V3 骨干 8.9B/A2.1B MoE，权重约 11GB，已用在支付宝搜索、蚁小保实时语音对话、安全核身。**限制是单轮转写，不做长会议分段。**
+
+### Audio8 ASR Infinite — 用缓存换无限时长
+
+原生上下文只有 30 秒，靠滚动 KV cache 拼成无限流，跑多久内存都不涨。语义 VAD 能区分思考停顿、口吃和真正的话轮结束——这比单纯的能量 VAD 值钱得多。
+
+Voxtral 实时音频塔 + Qwen2.5-3B 解码器，BF16 约 8.17GB。24/7 常开的转写场景（客服坐席、会议录制），这条线比"分段切音频再拼接"干净。
 
 ## 评测口径参考
 

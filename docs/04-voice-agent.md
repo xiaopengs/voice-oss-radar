@@ -13,6 +13,8 @@
 | Bolna | [bolna-ai/bolna](https://github.com/bolna-ai/bolna) | 见仓库 | Python | Twilio / Plivo 电话 | 配置驱动的外呼/客服 Agent | 2026-10 |
 | TEN Framework | [TEN-framework/ten-framework](https://github.com/TEN-framework/ten-framework) | Apache-2.0 | C++ / Go / Python | WebRTC、RTC | 低延迟实时多模态 Agent 运行时 | 2026-10 |
 | Rasa | [RasaHQ/rasa](https://github.com/RasaHQ/rasa) | Apache-2.0 | Python | 文本为主 | 状态机式对话、企业流程 | 2026-10 |
+| Dograh | [dograh-hq/dograh](https://github.com/dograh-hq/dograh) | BSD-2 | Python（Pipecat 分支） | SIP / Twilio / Vonage / Plivo / Telnyx / Asterisk ARI | 自托管 Vapi 替代：可视化流程 + 通话转移 + 自动 QA | 2026-11 |
+| Gradbot | [gradium-ai/gradbot](https://github.com/gradium-ai/gradbot) | MIT OR Apache-2.0 | Rust core + 多语言绑定 | 自管音频流 | 50 行起一个可打断的 Agent，话轮与打断收在 Rust 内核 | 2026-11 |
 
 ---
 
@@ -66,6 +68,18 @@
 - **适合**：对延迟极敏感、需要跑在端侧的实时语音 Agent
 
 ---
+
+### Dograh — 自托管版的 Vapi
+
+把电话接入、可视化呼叫流编辑器、通话转移、自动 QA 评分、通话链路追踪打包成一个能自己跑的平台，底层跑在 Pipecat 分支上。
+
+运营商覆盖 Twilio / Vonage / Plivo / Telnyx / Cloudonix / Asterisk ARI，也能自带 SIP 中继。自托管默认 10 路并发，8GB 内存 4 vCPU 起，用 API key 时不需要 GPU。**适合"不想被 SaaS 按分钟计费、又不想从零搭 SIP"的团队。**
+
+### Gradbot — 把最难调的那层单独抽出来
+
+Rust 写的多路复用内核，50 行代码起一个能被打断、能处理静默的语音 Agent，STT/LLM/TTS 三路复用加异步工具调用。
+
+官方自己说定位是原型验证，生产建议上 LiveKit Agents 或 Pipecat。**它真正的价值不是"能跑"，是把话轮管理与打断这套最难调的逻辑收在一个 Rust core 里**——只想借代码不想借框架的话，这是最干净的参考实现。
 
 ## 自己搭 vs 用框架
 

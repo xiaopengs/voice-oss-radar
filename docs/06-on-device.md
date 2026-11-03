@@ -15,6 +15,7 @@
 | Moonshine | [usefulsensors/moonshine](https://github.com/usefulsensors/moonshine) | MIT | ONNX | 短音频端侧 ASR | 2026-10 |
 | Vosk | [alphacep/vosk-api](https://github.com/alphacep/vosk-api) | Apache-2.0 | Kaldi 派生 | 轻量离线 ASR，多语言绑定 | 2026-10 |
 | TEN VAD | [TEN-framework/ten-vad](https://github.com/TEN-framework/ten-vad) | Apache-2.0 | 轻量 C | 端侧 VAD | 2026-10 |
+| Gradium Phonon | [gradium-ai/xn-ptts](https://github.com/gradium-ai/xn-ptts) | 代码 MIT OR Apache-2.0；权重 Apache-2.0（31m）/ **CC BY-NC 4.0**（40m 及多语） | Rust 自研（CUDA/Metal/Vulkan/WebGPU/CoreML） | 端侧 TTS：31M，7ms 首音，WASM 浏览器内 | 2026-11 |
 
 ---
 
@@ -52,6 +53,12 @@
 | Vosk | 模型小（几十 MB）、绑定全（含 Android/iOS/Rust）、离线稳定 | 精度明显落后于新一代模型；中文模型老 |
 
 ---
+
+### Gradium Phonon — 31M 在 CPU 上 7ms 开口
+
+Rust 推理栈，不依赖 PyTorch，64MB 量化权重，能在 WebAssembly 里直接跑；绑定覆盖 Rust / Python / Swift，后端有 CUDA / Metal / Vulkan / WebGPU / CoreML。对标 Kokoro（82M），同尺寸下首音延迟低两个数量级——**端侧 TTS 的瓶颈从来不是音质，是首音延迟。**
+
+**许可必须拆开看**：代码 MIT OR Apache-2.0，但只有英文 31m 权重是 Apache-2.0；40m 与多语种版是 CC BY-NC 4.0，仅限非商用，且在 HF 上要先接受条款。想要多语种又商用，这条路暂时不通。
 
 ## 端侧落地检查清单
 
