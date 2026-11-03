@@ -6,8 +6,8 @@
 #   4. 新增条目同时更新对应 docs/*.md
 
 meta:
-  version: "0.1.0"
-  updated_at: "2026-10-27"
+  version: "0.3.0"
+  updated_at: "2026-11-03"
   maintainer: xiaopengs
   scope: "语音方向开源项目：ASR / TTS / 全双工 / Agent 编排 / 说话人 / 端侧 / 音频前端 / 变声 / 翻译 / 会议应用"
 
@@ -191,6 +191,42 @@ projects:
     note: "FunASR 已支持 AutoModel 接入"
     verified: "2026-10"
 
+  - id: nemotron35-transcribe
+    name: Nemotron 3.5 Transcribe
+    repo: https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Transcribe-30B-A4B
+    category: asr
+    license: OpenMDW-1.1
+    language: [40 languages]
+    form: model
+    one_liner: 英伟达 30B-A4B 语音语言模型，转录+翻译+说话人标注+音频问答一个 checkpoint 全包
+    capabilities: [40语种转录, 31语种英互译, 最多8人说话人归属, 13语种说话人标注, 音频问答, 64K上下文, 1小时长录音, 提示词引导]
+    note: "HF Open ASR Leaderboard 英文组开放权重第一（5.33% 平均 WER）；DAI-ASR-I18N 21 语种 DER 18.26%，14 个系统里最低；BF16/FP8/NVFP4 单卡可跑；只处理录音，不支持直播流"
+    verified: "2026-11"
+
+  - id: ming3-asr
+    name: Ming-3.0-asr-tiny
+    repo: https://huggingface.co/inclusionAI/Ming-3.0-asr-tiny
+    category: asr
+    license: MIT
+    language: [zh, en]
+    form: model
+    one_liner: 蚂蚁百灵 Context ASR，吃候选热词和对话上文来纠专业术语与同音词
+    capabilities: [中英转录, 方言覆盖, 候选热词注入, 对话上下文条件化, 领域术语纠错]
+    note: "Ling V3 骨干 8.9B/A2.1B MoE，权重约 11GB；已用于支付宝搜索、蚁小保实时语音对话、安全核身；单轮转写，不做长会议分段"
+    verified: "2026-11"
+
+  - id: audio8-asr-infinite
+    name: Audio8 ASR Infinite
+    repo: https://github.com/Edge0-AI/Audio8-ASR-Infinite
+    category: asr
+    license: Apache-2.0
+    language: [zh, en]
+    form: model
+    one_liner: 滚动 KV cache 做 24/7 流式转写，跑多久都不涨内存、不掉精度
+    capabilities: [连续流式ASR, 滚动KV缓存, 语义VAD, 中英双语, vLLM部署]
+    note: "原生上下文只有 30 秒，靠 rolling cache 做无限流；语义 VAD 能区分思考停顿、口吃和真正话轮结束；Voxtral 实时音频塔 + Qwen2.5-3B 解码器，BF16 约 8.17GB"
+    verified: "2026-11"
+
   # ---------------- TTS ----------------
   - id: qwen3-tts
     name: Qwen3-TTS
@@ -368,6 +404,43 @@ projects:
     capabilities: [超轻量TTS, CPU实时, 多语言]
     verified: "2026-10"
 
+  - id: ming3-tts
+    name: Ming-3.0-tts
+    repo: https://github.com/inclusionAI/Ming-3.0-tts
+    category: tts
+    license: MIT
+    language: [zh, en]
+    form: model
+    one_liner: 0.5B 就能按文字指令演台词——指定情绪走向、重读、停顿，句中加入笑声和叹息
+    capabilities: [零样本克隆, Voice Design文字设定音色, 导演模式, 情绪与重读控制, 节奏控制, 44.1kHz, 中英双语]
+    note: "0.5B 是 Qwen2.5-0.5B 稠密骨干 + DiT head（BF16 包 1.48B / 2.96GB）；另有 tiny 版 7.9B/A1.3B MoE 做多说话人长文本；官方测试环境为 80GB H800，消费级显存数据未公开"
+    verified: "2026-11"
+
+  - id: fish-drama3
+    name: Fish Audio Drama 3
+    repo: https://github.com/fishaudio/fish-speech
+    category: tts
+    license: Fish Audio Community License v1.0
+    weights_license: 同上（年收入低于 50 万美元可免费商用）
+    language: [83 languages]
+    form: model
+    one_liner: 35B MoE 专为演群戏设计——一份剧本最多 16 个角色，括号里的舞台指示会被念出来
+    capabilities: [多角色台词, 舞台指示解析, 零样本克隆, 83语种, 流式输出, codebook-MTP解码]
+    note: "⚠️ 不是标准开源许可：年收入低于 50 万美元可免费商用，超出或作为 TTS/克隆/推理服务对外提供需单独授权，且禁止未经同意克隆真人声音；权重约 40GB，8GB 显存可跑但要把专家放系统内存"
+    verified: "2026-11"
+
+  - id: audio8-tts-realistic
+    name: Audio8-TTS-Realistic
+    repo: https://github.com/Audio8-AI/Audio8_TTS
+    category: tts
+    license: Apache-2.0
+    language: [23 languages]
+    form: model
+    one_liner: 0.6B 用「真人录音当评分基准」的 realism critic 做强化学习，专治念得准但听着假
+    capabilities: [零样本克隆, 23语种, 44.1kHz, DualAR双自回归, GRPO强化学习, SGLang服务]
+    note: "CV3 九语种平均错误率 4.86%，优于 Qwen3-TTS-1.7B 的 7.73%；但泰语 WER 48.57%、粤语 CER 31.35% 是明显短板；需 PyTorch 2.5+ / Transformers 4.57+ 且 trust_remote_code"
+    verified: "2026-11"
+
   # ---------------- Speech-to-Speech ----------------
   - id: moshi
     name: Moshi
@@ -459,6 +532,30 @@ projects:
     one_liner: 端侧多模态实时语音对话
     capabilities: [端侧多模态, 实时语音对话]
     verified: "2026-10"
+
+  - id: dograh
+    name: Dograh
+    repo: https://github.com/dograh-hq/dograh
+    category: voice-agent
+    license: BSD-2-Clause
+    language: [跟随所选模型]
+    form: framework
+    one_liner: 自托管的 Vapi 替代品，把电话、可视化流程、通话转移和自动质检打包成一个平台
+    capabilities: [可视化呼叫流编辑器, 多运营商接入, 通话转移, 自动QA评分, 通话链路追踪, 外呼名单, HTTP工具节点, MCP server]
+    note: "跑在 Pipecat 分支上；Twilio/Vonage/Plivo/Telnyx/Cloudonix/Asterisk ARI 或自带 SIP 中继；自托管默认 10 路并发；8GB 内存 4 vCPU 即可，用 API key 时不需要 GPU"
+    verified: "2026-11"
+
+  - id: gradbot
+    name: Gradbot
+    repo: https://github.com/gradium-ai/gradbot
+    category: voice-agent
+    license: MIT OR Apache-2.0
+    language: [跟随所接模型]
+    form: framework
+    one_liner: Rust 写的多路复用内核，50 行代码就能起一个能被打断、能处理静默的语音 Agent
+    capabilities: [STT/LLM/TTS三路复用, 话轮管理, 打断处理, 静默检测, 异步工具调用]
+    note: "官方定位是原型验证，生产场景建议直接上 LiveKit Agents 或 Pipecat；价值在于把话轮与打断这套最难调的逻辑收在一个 Rust core 里"
+    verified: "2026-11"
 
   # ---------------- Voice Agent 编排 ----------------
   - id: livekit-agents
@@ -563,6 +660,19 @@ projects:
     one_liner: 声纹嵌入训练与评测工具链
     capabilities: [声纹嵌入, 训练/评测, 说话人验证]
     verified: "2026-10"
+
+  - id: gradium-phonon
+    name: Gradium Phonon
+    repo: https://github.com/gradium-ai/xn-ptts
+    category: on-device
+    license: MIT OR Apache-2.0
+    weights_license: Apache-2.0（31m 英文）/ CC BY-NC 4.0（40m 及多语种）
+    language: [en, fr, de, es, pt]
+    form: runtime
+    one_liner: 31M 参数在笔记本 CPU 上 7ms 开口，Rust 推理栈不依赖 PyTorch
+    capabilities: [端侧TTS, 7ms首音, 64MB量化权重, WebAssembly浏览器内运行, Rust/Python/Swift绑定, CUDA/Metal/Vulkan/WebGPU/CoreML后端]
+    note: "⚠️ 只有英文 31m 权重是 Apache-2.0 可商用；40m 与多语种版是 CC BY-NC 4.0 仅限非商用，且在 HF 上需先接受条款；对标 Kokoro（82M），同尺寸下首音延迟低两个数量级"
+    verified: "2026-11"
 
   # ---------------- 端侧运行时 ----------------
   - id: sherpa-onnx
