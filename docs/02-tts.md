@@ -9,6 +9,7 @@
 |---|---|---|---|---|---|---|
 | Qwen3-TTS | [QwenLM/Qwen3-TTS](https://github.com/QwenLM/Qwen3-TTS) | Apache-2.0 | Apache-2.0 | 10 语言 | 流式 / 声音设计 / 克隆 | 2026-10 |
 | OmniVoice | [k2-fsa/OmniVoice](https://github.com/k2-fsa/OmniVoice) | Apache-2.0 | **CC-BY-NC** | 600+ | 零样本克隆 / 指令化声音设计 | 2026-10 |
+| Open-OmniVoice-TTS | [hypersniper05/Open-OmniVoice-TTS](https://github.com/hypersniper05/Open-OmniVoice-TTS) | 待核实 | **CC-BY-NC**（继承 OmniVoice） | 646 | OpenAI 兼容 `/v1/audio/speech` 自托管服务，Docker 一条命令 | 2026-11 |
 | CosyVoice | [FunAudioLLM/CosyVoice](https://github.com/FunAudioLLM/CosyVoice) | Apache-2.0 | 见模型页 | 中/英/日/粤/韩 | 中文强 / 流式 / 指令控制 | 2026-10 |
 | IndexTTS | [index-tts/index-tts](https://github.com/index-tts/index-tts) | Apache-2.0 | 见模型页 | 中/英 | 零样本 / 情感与时长控制 | 2026-10 |
 | GPT-SoVITS | [RVC-Boss/GPT-SoVITS](https://github.com/RVC-Boss/GPT-SoVITS) | MIT | MIT | 中/英/日/韩/粤 | 1 分钟数据少样本微调 | 2026-10 |
@@ -126,6 +127,16 @@
 用真人录音当评分基准训练 realism critic，再上 GRPO 强化学习。CV3 九语种平均错误率 4.86%，优于 Qwen3-TTS-1.7B 的 7.73%。
 
 **短板很具体**：泰语 WER 48.57%、粤语 CER 31.35%。多语种宣传和单语种可用是两件事——部署前先跑你的目标语种。需 PyTorch 2.5+ / Transformers 4.57+，且要 `trust_remote_code`。
+
+### Open-OmniVoice-TTS — 把模型变成"能直接接"的服务
+
+模型和服务的区别在于接入成本。Open-OmniVoice-TTS 把 OmniVoice 包成一个标准的 `/v1/audio/speech` 端点，**现有任何 OpenAI 客户端改个 base URL 就能用**，不用写一行适配代码；Open WebUI、LibreChat、SillyTavern 这类现成前端也能直接指过来。
+
+默认带齐 13 个 OpenAI 音色名，其中 12 个是从 LibriVox 朗读者录音克隆来的开放许可音色。克隆用 3–20 秒录音，也能用文字描述造音色（性别/年龄/音高/口音）。Docker 部署，NVIDIA 或 AMD GPU，约 4GB 显存；一句话在 RTX 3080 上约 0.34 秒、RTX 5090 上 0.17 秒。
+
+**两个必须注意的点**：一是**底层 OmniVoice 权重是 CC-BY-NC 非商用**，套个服务壳不改变这个约束，商用前要自己取得授权；二是**默认没有 API key 且监听所有网卡**，作者自己都提示暴露公网前要加鉴权或挂 VPN，直接对外开放等于送人一个免费 TTS。
+
+> 仓库地址据作者 `hypersniper05` 与项目名推定，GitHub 禁止自动访问，本次未能直连验证；代码许可待确认。入库前建议自行点开确认。
 
 ## 常见坑
 

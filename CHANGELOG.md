@@ -1,5 +1,16 @@
 # 变更记录
 
+## v0.4.0 - 2026-11-04
+
+### 新增
+
+- **Open-OmniVoice-TTS**（tts）：把 OmniVoice 包成 OpenAI 兼容 `/v1/audio/speech` 的自托管服务，Docker 部署，RTX 3080 一句话约 0.34 秒、约 4GB 显存，默认带 12 个 LibriVox 开放音色；项目数 86 → 87
+
+### 待核实
+
+- 仓库地址据作者 `hypersniper05` 与项目名推定，GitHub 禁止自动访问，本次未能直连验证
+- 代码许可未确认；底层 OmniVoice 权重为 CC-BY-NC 4.0，非商用
+
 ## v0.3.0 - 2026-11-03
 
 ### 新增

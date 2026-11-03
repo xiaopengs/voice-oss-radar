@@ -6,8 +6,8 @@
 #   4. 新增条目同时更新对应 docs/*.md
 
 meta:
-  version: "0.3.0"
-  updated_at: "2026-11-03"
+  version: "0.4.0"
+  updated_at: "2026-11-04"
   maintainer: xiaopengs
   scope: "语音方向开源项目：ASR / TTS / 全双工 / Agent 编排 / 说话人 / 端侧 / 音频前端 / 变声 / 翻译 / 会议应用"
 
@@ -252,6 +252,19 @@ projects:
     capabilities: [零样本克隆, 声音设计, 非言语符号, 拼音/音标纠音, 批量CLI, FlashInfer]
     note: "⚠️ 权重 CC-BY-NC 不可商用；VoiceStudio 默认 TTS 引擎之一"
     verified: "2026-10"
+
+  - id: open-omnivoice-tts
+    name: Open-OmniVoice-TTS
+    repo: https://github.com/hypersniper05/Open-OmniVoice-TTS
+    category: tts
+    license: 待核实
+    weights_license: CC-BY-NC-4.0
+    language: [646 languages]
+    form: framework
+    one_liner: 把 OmniVoice 包成 OpenAI 兼容的 /v1/audio/speech 服务，现有 OpenAI 客户端改个 base URL 就能用
+    capabilities: [OpenAI兼容接口, 3-20秒录音克隆, 13个OpenAI音色名, 12个LibriVox开放音色, 文本描述造音色, Docker部署, NVIDIA/AMD GPU, MP3/WAV/PCM输出, 0.25-4.0倍速]
+    note: "⚠️ 底层 OmniVoice 权重是 CC-BY-NC 非商用，商用需自行取得授权；一句话在 RTX 3080 上约 0.34 秒、RTX 5090 上 0.17 秒，约 4GB 显存；默认无 API key 且监听所有网卡，暴露公网前必须自己加鉴权；仓库地址据作者 hypersniper05 与项目名推定，GitHub 禁止自动访问未直连验证"
+    verified: "2026-11"
 
   - id: cosyvoice
     name: CosyVoice
