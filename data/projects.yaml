@@ -6,7 +6,7 @@
 #   4. 新增条目同时更新对应 docs/*.md
 
 meta:
-  version: "0.4.0"
+  version: "0.5.0"
   updated_at: "2026-11-04"
   maintainer: xiaopengs
   scope: "语音方向开源项目：ASR / TTS / 全双工 / Agent 编排 / 说话人 / 端侧 / 音频前端 / 变声 / 翻译 / 会议应用"
@@ -1032,3 +1032,23 @@ projects:
     one_liner: 轻量 ASR & TTS 工具箱 + 桌面悬浮话筒
     capabilities: [faster-whisper, 实时流式, 词级时间戳, 多TTS后端]
     verified: "2026-10"
+
+  - id: popcornell-flashder
+    name: FlashDER
+    repo: https://github.com/popcornell/FlashDER
+    category: diarization
+    license: MIT
+    language: ['any']
+    form: library
+    one_liner: Fastest and exact DER (Diarization Error Rate) and JER (Jaccard Error Rate) computation library for speaker diarization 
+    verified: "2026-11"
+  - id: hermitst-dafeiyu-rvc
+    name: dafeiyu-rvc
+    repo: https://github.com/HermitST/dafeiyu-rvc
+    category: voice-conversion
+    license: CC BY-NC 4.0
+    weights_license: CC BY-NC 4.0
+    language: ['zh', 'en']
+    form: model
+    one_liner: A RVC v1 voice conversion model for singing and daily speech, featuring 48k sample rate, RMVPE pitch extraction, and Con
+    verified: "2026-11"

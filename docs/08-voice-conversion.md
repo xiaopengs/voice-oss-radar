@@ -14,9 +14,19 @@
 | OpenVoice v2 | [myshell-ai/OpenVoice](https://github.com/myshell-ai/OpenVoice) | MIT | 参考音频即用 | 是（~100ms） | 2026-10 |
 | Step-Audio-EditX | [stepfun-ai/Step-Audio-EditX](https://github.com/stepfun-ai/Step-Audio-EditX) | 见仓库 | 无需训练 | 否 | 2026-10 |
 
+| dafeiyu-rvc | [HermitST/dafeiyu-rvc](https://github.com/HermitST/dafeiyu-rvc) | CC BY-NC 4.0 | model | A RVC v1 voice conversion mode | 2026-11 |
 ---
 
 ## 重点条目
+
+### dafeiyu-rvc
+
+- **地址**：[HermitST/dafeiyu-rvc](https://github.com/HermitST/dafeiyu-rvc)
+- **许可**：CC BY-NC 4.0
+- **简介**：A RVC v1 voice conversion model for singing and daily speech, featuring 48k sample rate, RMVPE pitch extraction, and ContentVec, along with matching indices and parameters.
+- **语言**：zh, en
+- **形态**：model
+
 
 ### RVC — 微调路线的天花板
 

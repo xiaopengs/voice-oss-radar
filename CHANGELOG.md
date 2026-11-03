@@ -1,5 +1,20 @@
 # 变更记录
 
+## v0.5.0 - 2026-11-04
+
+### 新增
+
+收录 2 个近期新开源语音项目，项目总数 87 → 89：
+
+- **diarization**：Fastest and exact DER (Diariza（MIT）
+- **voice-conversion**：A RVC v1 voice conversion mode（CC BY-NC 4.0）
+
+### 变更
+
+- 重新生成 `docs/index.html`：89 张卡片
+- `05-diarization.md` 主表与重点条目同步更新
+- `08-voice-conversion.md` 主表与重点条目同步更新
+
 ## v0.4.0 - 2026-11-04
 
 ### 新增

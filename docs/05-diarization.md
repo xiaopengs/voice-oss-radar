@@ -19,9 +19,19 @@
 | WeSpeaker | [wenet-e2e/wespeaker](https://github.com/wenet-e2e/wespeaker) | Apache-2.0 | 服务端 | 声纹嵌入训练/评测工具链 | 2026-10 |
 | MOSS-Transcribe-Diarize | [OpenMOSS-Team](https://huggingface.co/OpenMOSS-Team) | Apache-2.0 | 服务端 | **一次生成转写+时间戳+说话人** | 2026-10 |
 
+| FlashDER | [popcornell/FlashDER](https://github.com/popcornell/FlashDER) | MIT | library | Fastest and exact DER (Diariza | 2026-11 |
 ---
 
 ## 重点条目
+
+### FlashDER
+
+- **地址**：[popcornell/FlashDER](https://github.com/popcornell/FlashDER)
+- **许可**：MIT
+- **简介**：Fastest and exact DER (Diarization Error Rate) and JER (Jaccard Error Rate) computation library for speaker diarization evaluation. Matches results from md-eval-22.pl, dscore, and pyannote.metrics with both CPU and GPU (PyTorch) support.
+- **语言**：any
+- **形态**：library
+
 
 ### pyannote.audio — 精度标杆，但要过授权关
 
