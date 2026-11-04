@@ -6,7 +6,7 @@
 #   4. 新增条目同时更新对应 docs/*.md
 
 meta:
-  version: "0.5.0"
+  version: "0.6.0"
   updated_at: "2026-11-04"
   maintainer: xiaopengs
   scope: "语音方向开源项目：ASR / TTS / 全双工 / Agent 编排 / 说话人 / 端侧 / 音频前端 / 变声 / 翻译 / 会议应用"
@@ -1009,6 +1009,18 @@ projects:
     capabilities: [全局快捷键, VAD, 本地Whisper/Parakeet]
     note: "仓库地址待复核（原文标注为推断）"
     verified: "2026-10"
+
+  - id: openless
+    name: OpenLess
+    repo: https://github.com/Open-Less/openless
+    category: meeting-app
+    license: AGPL-3.0
+    language: [zh, en, ja, ko, 多语种]
+    form: desktop
+    one_liner: 按住热键说话、松开在光标处出润色文本，核心是把松散口语重组成结构化 AI prompt
+    capabilities: [全局热键听写, AI-prompt结构化模式, 风格包市场, 流式插入光标, 词典热词注入, 光标上下文, 翻译热键, 云ASR十余家, 本地Qwen3-ASR, 自带LLM凭证]
+    note: "AGPL-3.0 传染性许可，嵌入商业产品或做 SaaS 前需评估；项目处于 stability freeze 暂不收新功能 PR；macOS 包为 ad-hoc 签名未过公证，首次需 xattr -cr 绕 Gatekeeper；本地 ASR 仅 macOS 捆绑 Qwen3-ASR，Windows 走 Foundry Local Whisper 与 sherpa-onnx 实验分支，整体仍以云 ASR 为主"
+    verified: "2026-11"
 
   - id: voicestudio
     name: VoiceStudio

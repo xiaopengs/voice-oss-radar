@@ -19,6 +19,7 @@
 | Whisper Meeting Assistant | [bishoku/whisper-meeting-assistant](https://github.com/bishoku/whisper-meeting-assistant) | Tauri v2 | whisper.cpp + pyannote | macOS 专用 | ⚠️ |
 | meeting_transcript | [yoshi-bbb/meeting_transcript](https://github.com/yoshi-bbb/meeting_transcript) | 极简本地 | faster-whisper（CPU int8） | Win / Linux / macOS | ⚠️ |
 | Handy | [cjpais/handy](https://github.com/cjpais/handy) | Tauri + Rust | Whisper / Parakeet | 跨平台 | ⚠️ |
+| OpenLess | [Open-Less/openless](https://github.com/Open-Less/openless) | Tauri 2 + Rust（openless-core 共享后端） | 云 ASR 十余家 + 本地 Qwen3-ASR（仅 macOS） | macOS / Win / Linux / Android / iOS | ✅ 强（火山/腾讯/讯飞/百炼可选） |
 
 ---
 
@@ -100,6 +101,28 @@
 | Handy | 快捷键触发 + VAD + 剪贴板粘贴；MIT；跨平台 |
 
 ---
+
+### OpenLess — 把听写做成"输入基础设施"
+
+4038 stars，2026-04 立项，AGPL-3.0。定位是 Typeless / Wispr Flow / Superwhisper 的开源替代：按住热键说话，松开后文本直接出现在光标处，任何输入框都行（ChatGPT、Cursor、Notion、邮件草稿）。
+
+它真正区别于普通听写工具的是 **AI-prompt 模式**——不是逐字转写，而是把松散口语重组成带上下文、约束和请求的结构化 prompt，可以直接粘给模型用。四种输出模式（raw / light polish / structured / formal）加一个翻译热键。
+
+工程上有三处值得抄：
+
+- **风格包（Style Pack）**：每种输出风格是独立 system prompt，热键切换，社区市场一键装。把"这次要什么语气"这个反复决策沉淀成默认值。
+- **流式插入**：润色结果逐字符写进光标，而不是等整段完成，感知延迟明显下降；应用不接受流式按键时自动回退到一次性粘贴。
+- **词典热词双投**：词典条目既注入火山 ASR 的 `context.hotwords`，又作为润色阶段的语义提示——同一个词在识别和清理两处各纠一次。
+
+**几个必须知道的坑**：
+
+- **AGPL-3.0 是传染性许可**，嵌进商业产品或做成 SaaS 前先评估
+- 项目正处 **stability freeze**，明确不收新功能 PR，只收 bug 修复、安全、文档、测试
+- macOS 包是 **ad-hoc 签名、未过 Apple 公证**，首次打开要 `xattr -cr /Applications/OpenLess.app` 绕 Gatekeeper
+- **本地 ASR 只在 macOS 捆绑 Qwen3-ASR**（0.6B / 1.7B），Windows 是 Foundry Local Whisper 和 sherpa-onnx 实验分支；整体仍以云 ASR 为主（火山 bigasr、腾讯混元 Hy-ASR、讯飞 RTASR、阿里百炼含 Fun-ASR-Flash、阶跃 StepAudio、智谱 GLM-ASR、ElevenLabs Scribe、OpenAI 兼容等十余家），完全离线这条路还没走通
+- 它**不答题、不执行任务**，每次听写都是独立的清理请求，不累积上下文——想要"说一句话让它帮我干活"，这不是那个工具
+
+对中文场景是加分项：云 ASR 里火山、腾讯、讯飞、百炼都是中文强项，可选 provider 比多数开源听写工具宽得多。
 
 ## 易混淆：VoiceStudio 不是会议转写工具
 

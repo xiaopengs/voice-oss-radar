@@ -1,5 +1,15 @@
 # 变更记录
 
+## v0.6.0 - 2026-11-04
+
+### 新增
+
+- **OpenLess**（meeting-app / 桌面语音输入）：按住热键说话、松开在光标处出润色文本，核心能力是把松散口语重组成结构化 AI prompt；Tauri 2 + Rust，macOS / Windows / Linux / Android / iOS，云 ASR 十余家 + 本地 Qwen3-ASR（仅 macOS），AGPL-3.0；项目数 89 → 90
+
+### 说明
+
+- OpenLess 归入「会议转写桌面应用」分类，该分类实际已容纳 Handy 等通用语音输入工具
+
 ## v0.5.0 - 2026-11-04
 
 ### 新增
