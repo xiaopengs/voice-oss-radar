@@ -6,7 +6,12 @@
 
 收录 1 个近期新开源语音项目，项目总数 90 → 91：
 
-- **meeting-app**：Free, offline teleprompter tha（MIT）
+- **recordplease**（meeting-app / Windows 离线提词器，MIT）：Electron + Vosk，脚本跟着说话进度滚动，同时录屏/摄像头/麦克风且提词窗口不入画；完全离线、不接任何 AI 服务。属于 ASR 的应用层用法（用识别结果对齐滚动位置），不做转写与纪要，前身为 Ghostprompter
+
+### 修正
+
+- 修复三条 `one_liner` 被按 120 字符硬截断、断在词中间的问题（FlashDER、dafeiyu-rvc、recordplease），并补齐 `capabilities` 与 `note`
+- 修复分类文档自动插入的两处格式错误：新增行落在表格空行之后导致表格断裂、列数与表头不匹配；以及末尾追加了模板化的「重点条目」空壳
 
 ### 变更
 

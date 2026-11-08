@@ -20,8 +20,7 @@
 | meeting_transcript | [yoshi-bbb/meeting_transcript](https://github.com/yoshi-bbb/meeting_transcript) | 极简本地 | faster-whisper（CPU int8） | Win / Linux / macOS | ⚠️ |
 | Handy | [cjpais/handy](https://github.com/cjpais/handy) | Tauri + Rust | Whisper / Parakeet | 跨平台 | ⚠️ |
 | OpenLess | [Open-Less/openless](https://github.com/Open-Less/openless) | Tauri 2 + Rust（openless-core 共享后端） | 云 ASR 十余家 + 本地 Qwen3-ASR（仅 macOS） | macOS / Win / Linux / Android / iOS | ✅ 强（火山/腾讯/讯飞/百炼可选） |
-
-| recordplease | [luisbei/recordplease](https://github.com/luisbei/recordplease) | MIT | en | desktop | — | 2026-11 |
+| recordplease | [luisbei/recordplease](https://github.com/luisbei/recordplease) | Electron | Vosk（离线，按需下载模型） | Windows 专用 | — （不做转写） |
 ---
 
 ## 能力对照
@@ -125,6 +124,21 @@
 
 对中文场景是加分项：云 ASR 里火山、腾讯、讯飞、百炼都是中文强项，可选 provider 比多数开源听写工具宽得多。
 
+### recordplease — 提词器，不是转写工具
+
+Electron + **Vosk** 做的 Windows 离线提词器：你说话，脚本跟着滚；已读的词变暗，`(下一张幻灯片)` 这类括号提示直接跳过；同时录屏、录摄像头、录麦克风，而**提词窗口不进画面**。
+
+它的工程价值在两点：
+
+- **用识别结果对齐滚动位置**，而不是靠定时器匀速滚。这是 ASR 的一种低延迟用法——不需要整句识别准确，只需要知道"读到哪了"，所以小模型够用，本地跑得动。
+- **完全离线、不接任何 AI 服务**。README 明确写着不联网取内容、不接 chatbot/MCP、不能被远程控制，只显示你自己打开的 `.txt` / `.md`。唯一的联网动作是你主动下载语音模型。
+
+边界也要说清：
+
+- **它不做转写、不做纪要**，输出是视频文件而不是文字。把它归到这一页，是因为它和 Handy / OpenLess 一样属于"语音能力的应用层用法"，但它解决的问题是录课，不是记会。
+- **Windows 专用**，安装包尚未代码签名，需要自己校验 SHA-256。
+- 前身叫 Ghostprompter，v1.3.0 才改名 RecordPlease，搜旧资料会撞名。
+
 ## 易混淆：VoiceStudio 不是会议转写工具
 
 很多人把 **VoiceStudio** 当成会议转写项目，其实它是**语音创作工作台**（本地 ElevenLabs 替代品）。
@@ -170,14 +184,4 @@
 4. **diarization 要能降级**：分离失败时输出"未识别说话人"，不要编造标签
 5. **本地 LLM 摘要**：Ollama + 7B 级模型足够做会议纪要，不必上云
 6. **导出格式是产品力**：Markdown / DOCX / SRT / JSON 至少给三种，接 Obsidian 是加分项
-
-## 重点条目
-
-### recordplease
-
-- **地址**：[luisbei/recordplease](https://github.com/luisbei/recordplease)
-- **许可**：MIT
-- **简介**：Free, offline teleprompter that follows your voice and records screen, webcam and mic. Hidden from the recording. For lectures and presentations.
-- **语言**：en
-- **形态**：desktop
 

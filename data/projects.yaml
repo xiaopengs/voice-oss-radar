@@ -1052,7 +1052,9 @@ projects:
     license: MIT
     language: ['any']
     form: library
-    one_liner: Fastest and exact DER (Diarization Error Rate) and JER (Jaccard Error Rate) computation library for speaker diarization 
+    one_liner: 说话人分离的评测指标计算库，声称是最快且精确的 DER / JER 实现
+    capabilities: [精确DER计算, JER计算, 快速实现, 与主流diarization流水线对接]
+    note: "只解决「怎么算分」这一件事，不产出分离结果——它是评测工具而非分离模型。价值在于把 DER 计算从几分钟压到秒级，让调参循环变快"
     verified: "2026-11"
   - id: hermitst-dafeiyu-rvc
     name: dafeiyu-rvc
@@ -1062,7 +1064,9 @@ projects:
     weights_license: CC BY-NC 4.0
     language: ['zh', 'en']
     form: model
-    one_liner: A RVC v1 voice conversion model for singing and daily speech, featuring 48k sample rate, RMVPE pitch extraction, and Con
+    one_liner: RVC v1 变声模型，48kHz 采样率 + RMVPE 音高提取，面向唱歌与日常语音
+    capabilities: [RVC v1推理, 48kHz输出, RMVPE音高提取, 唱歌变声, 日常语音变声]
+    note: "权重是 CC BY-NC 4.0，禁止商用；RVC v1 架构本身已不是最新一代（v2 与后续分支在音质和音域上更好），收录主要因为它是中文社区仍在活跃维护的分支之一"
     verified: "2026-11"
 
   - id: luisbei-recordplease
@@ -1072,5 +1076,7 @@ projects:
     license: MIT
     language: ['en']
     form: desktop
-    one_liner: Free, offline teleprompter that follows your voice and records screen, webcam and mic. Hidden from the recording. For le
+    one_liner: Windows 端离线提词器：脚本跟着你的说话进度滚动，同时录屏、录摄像头、录麦克风，提词窗口不进画面
+    capabilities: [语音跟读滚动, 已读词变暗, 括号提示跳过, 屏幕录制, 摄像头录制, 麦克风录制, 提词器不入画, 完全离线, Vosk本地识别, 模型按需下载]
+    note: "Electron + Vosk，Windows 专用；不接任何 AI/LLM 或外部服务，只显示你自己打开的 .txt/.md 脚本，数据不出本机。前身叫 Ghostprompter，v1.3.0 改名。安装包尚未代码签名。它是 ASR 的应用层用法（用识别结果对齐滚动位置），不做转写也不做纪要——和会议转写工具是两回事"
     verified: "2026-11"
