@@ -1,5 +1,18 @@
 # 变更记录
 
+## v0.7.0 - 2026-11-09
+
+### 新增
+
+收录 1 个近期新开源语音项目，项目总数 90 → 91：
+
+- **meeting-app**：Free, offline teleprompter tha（MIT）
+
+### 变更
+
+- 重新生成 `docs/index.html`：91 张卡片
+- `10-meeting-desktop.md` 主表与重点条目同步更新
+
 ## v0.6.0 - 2026-11-04
 
 ### 新增

@@ -6,8 +6,8 @@
 #   4. 新增条目同时更新对应 docs/*.md
 
 meta:
-  version: "0.6.0"
-  updated_at: "2026-11-04"
+  version: "0.7.0"
+  updated_at: "2026-11-09"
   maintainer: xiaopengs
   scope: "语音方向开源项目：ASR / TTS / 全双工 / Agent 编排 / 说话人 / 端侧 / 音频前端 / 变声 / 翻译 / 会议应用"
 
@@ -1063,4 +1063,14 @@ projects:
     language: ['zh', 'en']
     form: model
     one_liner: A RVC v1 voice conversion model for singing and daily speech, featuring 48k sample rate, RMVPE pitch extraction, and Con
+    verified: "2026-11"
+
+  - id: luisbei-recordplease
+    name: recordplease
+    repo: https://github.com/luisbei/recordplease
+    category: meeting-app
+    license: MIT
+    language: ['en']
+    form: desktop
+    one_liner: Free, offline teleprompter that follows your voice and records screen, webcam and mic. Hidden from the recording. For le
     verified: "2026-11"

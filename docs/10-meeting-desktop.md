@@ -21,6 +21,7 @@
 | Handy | [cjpais/handy](https://github.com/cjpais/handy) | Tauri + Rust | Whisper / Parakeet | 跨平台 | ⚠️ |
 | OpenLess | [Open-Less/openless](https://github.com/Open-Less/openless) | Tauri 2 + Rust（openless-core 共享后端） | 云 ASR 十余家 + 本地 Qwen3-ASR（仅 macOS） | macOS / Win / Linux / Android / iOS | ✅ 强（火山/腾讯/讯飞/百炼可选） |
 
+| recordplease | [luisbei/recordplease](https://github.com/luisbei/recordplease) | MIT | en | desktop | — | 2026-11 |
 ---
 
 ## 能力对照
@@ -169,3 +170,14 @@
 4. **diarization 要能降级**：分离失败时输出"未识别说话人"，不要编造标签
 5. **本地 LLM 摘要**：Ollama + 7B 级模型足够做会议纪要，不必上云
 6. **导出格式是产品力**：Markdown / DOCX / SRT / JSON 至少给三种，接 Obsidian 是加分项
+
+## 重点条目
+
+### recordplease
+
+- **地址**：[luisbei/recordplease](https://github.com/luisbei/recordplease)
+- **许可**：MIT
+- **简介**：Free, offline teleprompter that follows your voice and records screen, webcam and mic. Hidden from the recording. For lectures and presentations.
+- **语言**：en
+- **形态**：desktop
+
