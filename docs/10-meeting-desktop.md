@@ -21,6 +21,7 @@
 | Handy | [cjpais/handy](https://github.com/cjpais/handy) | Tauri + Rust | Whisper / Parakeet | 跨平台 | ⚠️ |
 | OpenLess | [Open-Less/openless](https://github.com/Open-Less/openless) | Tauri 2 + Rust（openless-core 共享后端） | 云 ASR 十余家 + 本地 Qwen3-ASR（仅 macOS） | macOS / Win / Linux / Android / iOS | ✅ 强（火山/腾讯/讯飞/百炼可选） |
 | recordplease | [luisbei/recordplease](https://github.com/luisbei/recordplease) | Electron | Vosk（离线，按需下载模型） | Windows 专用 | — （不做转写） |
+
 ---
 
 ## 能力对照
